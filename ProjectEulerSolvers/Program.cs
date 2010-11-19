@@ -24,7 +24,7 @@ namespace ProjectEulerSolvers
             watch.Start();
             long rst = e();
             watch.Stop();
-            Console.WriteLine("anwser of {1} is: {0:D}", rst, e.Method.Name);
+            Console.WriteLine(" anwser of {1} is: {0:D}", rst, e.Method.Name);
             Console.WriteLine("time cost is: {0}ms", watch.ElapsedMilliseconds);
         }
 
