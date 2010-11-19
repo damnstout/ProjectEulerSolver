@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Threading;
 
+using Emil.GMP;
+
 namespace ProjectEulerSolvers
 {
     delegate long Executor();
@@ -20,11 +22,11 @@ namespace ProjectEulerSolvers
 
         static void Main(string[] args)
         {
-            Executor e = new Executor(prob057);
+            Executor e = new Executor(prob012);
             watch.Start();
             long rst = e();
             watch.Stop();
-            Console.WriteLine(" anwser of {1} is: {0:D}", rst, e.Method.Name);
+            Console.WriteLine("anwser of {1} is: {0:D}", rst, e.Method.Name);
             Console.WriteLine("time cost is: {0}ms", watch.ElapsedMilliseconds);
         }
 
@@ -78,7 +80,7 @@ namespace ProjectEulerSolvers
             long ceil = 999 * 999;
             for (long i = ceil; i > 0; i-- )
             {
-                if (prob004IsPalindromic((int) i) && prob004IsResolvable((int) i))
+                if (Tools.IsPalindromic(i) && prob004IsResolvable((int) i))
                 {
                     return i;
                 }
@@ -99,24 +101,6 @@ namespace ProjectEulerSolvers
             return false;
         }
 
-        static bool prob004IsPalindromic(int num)
-        {
-            return prob004IsPalindromic(Convert.ToString(num));
-        }
-
-        static bool prob004IsPalindromic(string s)
-        {
-            int count = s.Length == 1 ? 0 : (s.Length % 2 == 0) ? (s.Length / 2) : ((s.Length / 2) + 1);
-            for (int i = 0; i <= count; i++)
-            {
-                if (s[i] != s[s.Length - i - 1])
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         static long prob005()
         {
             return prob005Recur(20);
@@ -129,12 +113,6 @@ namespace ProjectEulerSolvers
                 return 1;
             }
             return Tools.LCM(n, prob005Recur(n - 1));
-        }
-
-        static long prob005GCD(long a, long b)
-        {
-            if (a % b == 0) return b;
-            return prob005GCD(b, a % b);
         }
 
         static long prob006()
@@ -157,34 +135,12 @@ namespace ProjectEulerSolvers
             while (counter < 10001)
             {
                 n++;
-                if (prob007IsPrime(n))
+                if (Tools.IsPrime(n))
                 {
                     counter++;
                 }
             }
             return n;
-        }
-
-        static bool prob007IsPrime(long n)
-        {
-            double k;
-            if (n == 2 || n == 3)
-            {
-                return true;
-            }
-            if (n == 1)
-            {
-                return false;
-            }
-            k = Math.Sqrt(n) + 1;
-            for (int i = 2; i <= k; i++ )
-            {
-                if (n % i == 0)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         static long prob008()
@@ -230,7 +186,7 @@ namespace ProjectEulerSolvers
             long sum = 0;
             while (n < 2000000)
             {
-                if (prob007IsPrime(n))
+                if (Tools.IsPrime(n))
                 {
                     sum += n;
                 }
@@ -278,80 +234,24 @@ namespace ProjectEulerSolvers
         static long prob012()
         {
             int i = 1;
-            long rst = prob012TriangleN(i);
-            while(prob012DivisorCount(rst) < 500)
+            long rst = Tools.TriangleN(i);
+            while(Tools.DivisorCount(rst) < 500)
             {
                 i++;
-                rst = prob012TriangleN(i);
+                rst = Tools.TriangleN(i);
             }
             return rst;
         }
 
-        static long prob012TriangleN(int n)
-        {
-            long rst = 0;
-            for (int i = 1; i <= n; i++)
-            {
-                rst += i;
-            }
-            return rst;
-        }
-
-        static int prob012DivisorCount(long n)
-        {
-            int rst = 0;
-            for (long i = 1; i <= (n / 2 + 1) && i < n; i++ )
-            {
-                if (n % i == 0)
-                {
-                    rst++;
-                }
-            }
-            rst++;
-            Console.WriteLine("{0:D},{1:D}", n, rst);
-            return rst;
-        }
-
-        static string prob013()
+        static long prob013()
         {
             string[] vals = { "37107287533902102798797998220837590246510135740250", "46376937677490009712648124896970078050417018260538", "74324986199524741059474233309513058123726617309629", "91942213363574161572522430563301811072406154908250", "23067588207539346171171980310421047513778063246676", "89261670696623633820136378418383684178734361726757", "28112879812849979408065481931592621691275889832738", "44274228917432520321923589422876796487670272189318", "47451445736001306439091167216856844588711603153276", "70386486105843025439939619828917593665686757934951", "62176457141856560629502157223196586755079324193331", "64906352462741904929101432445813822663347944758178", "92575867718337217661963751590579239728245598838407", "58203565325359399008402633568948830189458628227828", "80181199384826282014278194139940567587151170094390", "35398664372827112653829987240784473053190104293586", "86515506006295864861532075273371959191420517255829", "71693888707715466499115593487603532921714970056938", "54370070576826684624621495650076471787294438377604", "53282654108756828443191190634694037855217779295145", "36123272525000296071075082563815656710885258350721", "45876576172410976447339110607218265236877223636045", "17423706905851860660448207621209813287860733969412", "81142660418086830619328460811191061556940512689692", "51934325451728388641918047049293215058642563049483", "62467221648435076201727918039944693004732956340691", "15732444386908125794514089057706229429197107928209", "55037687525678773091862540744969844508330393682126", "18336384825330154686196124348767681297534375946515", "80386287592878490201521685554828717201219257766954", "78182833757993103614740356856449095527097864797581", "16726320100436897842553539920931837441497806860984", "48403098129077791799088218795327364475675590848030", "87086987551392711854517078544161852424320693150332", "59959406895756536782107074926966537676326235447210", "69793950679652694742597709739166693763042633987085", "41052684708299085211399427365734116182760315001271", "65378607361501080857009149939512557028198746004375", "35829035317434717326932123578154982629742552737307", "94953759765105305946966067683156574377167401875275", "88902802571733229619176668713819931811048770190271", "25267680276078003013678680992525463401061632866526", "36270218540497705585629946580636237993140746255962", "24074486908231174977792365466257246923322810917141", "91430288197103288597806669760892938638285025333403", "34413065578016127815921815005561868836468420090470", "23053081172816430487623791969842487255036638784583", "11487696932154902810424020138335124462181441773470", "63783299490636259666498587618221225225512486764533", "67720186971698544312419572409913959008952310058822", "95548255300263520781532296796249481641953868218774", "76085327132285723110424803456124867697064507995236", "37774242535411291684276865538926205024910326572967", "23701913275725675285653248258265463092207058596522", "29798860272258331913126375147341994889534765745501", "18495701454879288984856827726077713721403798879715", "38298203783031473527721580348144513491373226651381", "34829543829199918180278916522431027392251122869539", "40957953066405232632538044100059654939159879593635", "29746152185502371307642255121183693803580388584903", "41698116222072977186158236678424689157993532961922", "62467957194401269043877107275048102390895523597457", "23189706772547915061505504953922979530901129967519", "86188088225875314529584099251203829009407770775672", "11306739708304724483816533873502340845647058077308", "82959174767140363198008187129011875491310547126581", "97623331044818386269515456334926366572897563400500", "42846280183517070527831839425882145521227251250327", "55121603546981200581762165212827652751691296897789", "32238195734329339946437501907836945765883352399886", "75506164965184775180738168837861091527357929701337", "62177842752192623401942399639168044983993173312731", "32924185707147349566916674687634660915035914677504", "99518671430235219628894890102423325116913619626622", "73267460800591547471830798392868535206946944540724", "76841822524674417161514036427982273348055556214818", "97142617910342598647204516893989422179826088076852", "87783646182799346313767754307809363333018982642090", "10848802521674670883215120185883543223812876952786", "71329612474782464538636993009049310363619763878039", "62184073572399794223406235393808339651327408011116", "66627891981488087797941876876144230030984490851411", "60661826293682836764744779239180335110989069790714", "85786944089552990653640447425576083659976645795096", "66024396409905389607120198219976047599490197230297", "64913982680032973156037120041377903785566085089252", "16730939319872750275468906903707539413042652315011", "94809377245048795150954100921645863754710598436791", "78639167021187492431995700641917969777599028300699", "15368713711936614952811305876380278410754449733078", "40789923115535562561142322423255033685442488917353", "44889911501440648020369068063960672322193204149535", "41503128880339536053299340368006977710650566631954", "81234880673210146739058568557934581403627822703280", "82616570773948327592232845941706525094512325230608", "22918802058777319719839450180888072429661980811197", "77158542502016545090413245809786882778948721859617", "72107838435069186155435662884062257473692284509516", "20849603980134001723930671666823555245252804609722", "53503534226472524250874054075591789781264330331690" };
-            string rst = "";
+            BigInt rst = 0;
             foreach (string val in vals)
             {
-                rst = prob013BignumSum(rst, val);
+                rst += new BigInt(val);
             }
-            return rst.Substring(0, 10);
-        }
-
-        static string prob013BignumSum(string n1, string n2)
-        {
-            int loop = Math.Max(n1.Length, n2.Length);
-            char carry = (char) 0;
-            string rst = "";
-            char[] n1a = n1.ToCharArray();
-            char[] n2a = n2.ToCharArray();
-            Array.Reverse(n1a);
-            Array.Reverse(n2a);
-            for (int i = 0; i < loop; i++ )
-            {
-                char sum = (char) ((i < n1a.Length ? n1a[i] : '0') + (i < n2a.Length ? n2a[i] : '0') + carry - '0');
-                if (sum > '9')
-                {
-                    sum = (char) (sum - 10);
-                    carry = (char) 1;
-                }
-                else
-                {
-                    carry = (char) 0;
-                }
-                rst = sum + rst;
-            }
-            if (carry > 0)
-            {
-                rst = '1' + rst;
-            }
-            //Console.WriteLine("{0}\n+{1}=\n{2}", n1, n2, rst);
-            return rst;
+            return long.Parse(rst.ToString().Substring(0, 10));
         }
 
         static long prob014()
@@ -405,13 +305,13 @@ namespace ProjectEulerSolvers
 
         static long prob016()
         {
-            string n = "1";
+            BigInt n = 1;
             for (int i = 0; i < 1000; i++ )
             {
-                n = prob013BignumSum(n, n);
+                n += n;
             }
             long rst = 0;
-            char[] na = n.ToCharArray();
+            char[] na = n.ToString().ToCharArray();
             for (int i = 0; i < na.Length; i++ )
             {
                 rst += (na[i] - '0');
@@ -691,19 +591,19 @@ namespace ProjectEulerSolvers
 
         static long prob020()
         {
-            string n = "1";
+            BigInt n = 1;
             for (int i = 0; i < 100; i++ )
             {
                 Console.Write("{0:D},", n);
-                string tmp = n;
+                BigInt tmp = n;
                 for (int j = 0; j < i; j++ )
                 {
-                    n = prob013BignumSum(n, tmp);
+                    n += tmp;
                 }
             }
-            Console.WriteLine(n);
+            outputLine(n.ToString());
             long rst = 0;
-            char[] na = n.ToCharArray();
+            char[] na = n.ToString().ToCharArray();
             for (int i = 0; i < na.Length; i++)
             {
                 rst += (na[i] - '0');
@@ -875,11 +775,11 @@ namespace ProjectEulerSolvers
 
         static long prob025()
         {
-            string f1 = "1", f2 = "1";
+            BigInt f1 = 1, f2 = 1;
             long counter = 3;
             while (true)
             {
-                string tmp = prob013BignumSum(f1, f2);
+                BigInt tmp = f1 + f2;
                 if (counter % 2 == 0)
                 {
                     f2 = tmp;
@@ -888,8 +788,8 @@ namespace ProjectEulerSolvers
                 {
                     f1 = tmp;
                 }
-                Console.WriteLine("{0} is {1}th Fibonacci", tmp, counter);
-                if (tmp.Length >= 1000)
+                outputLine(string.Format("{0} is {1}th Fibonacci", tmp, counter));
+                if (tmp.ToString().Length >= 1000)
                 {
                     return counter;
                 }
@@ -953,7 +853,7 @@ namespace ProjectEulerSolvers
             int rst = 0;
             for (int i = 2; i < 1000; i++ )
             {
-                if (prob007IsPrime(i))
+                if (Tools.IsPrime(i))
                 {
                     candiPrimes.Insert(0, -i);
                     candiPrimes.Add(i);
@@ -967,7 +867,7 @@ namespace ProjectEulerSolvers
                 {
                     int n = 0;
                     long currPrime = prob027Formula(n, a, b);
-                    while (primes.Contains(Math.Abs(currPrime)) || prob007IsPrime(Math.Abs(currPrime)))
+                    while (primes.Contains(Math.Abs(currPrime)) || Tools.IsPrime(Math.Abs(currPrime)))
                     {
                         n++;
                         currPrime = prob027Formula(n, a, b);
@@ -1023,42 +923,16 @@ namespace ProjectEulerSolvers
 
         static long prob029()
         {
-            HashSet<string> rst = new HashSet<string>();
+            HashSet<BigInt> rst = new HashSet<BigInt>();
             for (int a = 2; a <= 100; a++ )
             {
                 for (int b = 2; b <= 100; b++ )
                 {
-                    rst.Add(prob029BigNumPow(a, b));
-                    Console.WriteLine("adding: pow({0}, {1}), total: {2}", a, b, rst.Count);
+                    rst.Add(BigInt.Power(a, b));
+                    outputLine(string.Format("adding: pow({0}, {1}), total: {2}", a, b, rst.Count));
                 }
             }
             return rst.Count;
-        }
-
-        static string prob029BigNumPow(int a, int b)
-        {
-            if (b == 0)
-            {
-                return "0";
-            }
-            string astr = a.ToString();
-            string rst = astr;
-            for (int i = 1; i < b; i++ )
-            {
-                rst = prob029StringNumMulti(rst, astr);
-            }
-            return rst;
-        }
-
-        static string prob029StringNumMulti(string a, string b)
-        {
-            string rst = a;
-            int multiplier = Convert.ToInt32(b);
-            for (int i = 1; i < multiplier; i++ )
-            {
-                rst = prob013BignumSum(rst, a);
-            }
-            return rst;
         }
 
         static long prob030()
@@ -1299,7 +1173,7 @@ namespace ProjectEulerSolvers
 
         static int prob033MinFactor(int numerator, int demoninator, int n)
         {
-            return (int) (n / prob005GCD(numerator, demoninator));
+            return (int) (n / Tools.GCD(numerator, demoninator));
         }
 
         static long prob034()
@@ -1380,7 +1254,7 @@ namespace ProjectEulerSolvers
                 }
                 if (!primes.Contains(nn))
                 {
-                    if (prob007IsPrime(nn))
+                    if (Tools.IsPrime(nn))
                     {
                         primes.Add(nn);
                     } 
@@ -1454,7 +1328,7 @@ namespace ProjectEulerSolvers
                 long right = long.Parse(nstr.Substring(0, nstr.Length - i));
                 if (!primes.Contains(left))
                 {
-                    if (prob007IsPrime(left))
+                    if (Tools.IsPrime(left))
                     {
                         primes.Add(left);
                     }
@@ -1465,7 +1339,7 @@ namespace ProjectEulerSolvers
                 }
                 if (!primes.Contains(right))
                 {
-                    if (prob007IsPrime(right))
+                    if (Tools.IsPrime(right))
                     {
                         primes.Add(right);
                     }
@@ -1550,7 +1424,7 @@ namespace ProjectEulerSolvers
             /************************************************************************/
             for (long n = 7654319; n > 1; n -- )
             {
-                if (prob041IsPanDigital(n) && prob007IsPrime(n))
+                if (prob041IsPanDigital(n) && Tools.IsPrime(n))
                 {
                     return n;
                 }
@@ -1780,7 +1654,7 @@ namespace ProjectEulerSolvers
             long n = 3;
             while (true)
             {
-                if (!prob007IsPrime(n))
+                if (!Tools.IsPrime(n))
                 {
                     if (!prob046Decomposeable(n, primes))
                     {
@@ -1867,7 +1741,7 @@ namespace ProjectEulerSolvers
             List<long> primes = new List<long>(80000);
             for (long n = 2; n <= 1000000; n++ )
             {
-                if (prob007IsPrime(n))
+                if (Tools.IsPrime(n))
                 {
                     primes.Add(n);
                 }
@@ -1912,7 +1786,7 @@ namespace ProjectEulerSolvers
             HashSet<long> primeSet = new HashSet<long>();
             for (long n = 2; n <= 1000000; n++)
             {
-                if (prob007IsPrime(n))
+                if (Tools.IsPrime(n))
                 {
                     primes.Add(n);
                     primeSet.Add(n);
@@ -2015,7 +1889,7 @@ namespace ProjectEulerSolvers
             {
                 return true;
             }
-            if (prob007IsPrime(n))
+            if (Tools.IsPrime(n))
             {
                 primes.Add(n);
                 return true;
@@ -2149,17 +2023,15 @@ namespace ProjectEulerSolvers
 
         static long prob055()
         {
-            Console.WriteLine(prob004IsPalindromic("2"));
-            Console.WriteLine(prob013BignumSum("0001", "200"));
             long rst = 0;
             for (int i = 1; i < 10000; i++ )
             {
-                string num = i.ToString();
+                BigInt num = i;
                 int counter = 0;
                 while (counter < 50)
                 {
-                    num = prob013BignumSum(num, prob055ReverseString(num));
-                    if (prob004IsPalindromic(num))
+                    num += prob055ReverseString(num);
+                    if (Tools.IsPalindromic(num))
                     {
                         break;
                     }
@@ -2171,11 +2043,11 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static string prob055ReverseString(string s)
+        static BigInt prob055ReverseString(BigInt n)
         {
-            char[] ca = s.ToCharArray();
+            char[] ca = n.ToString().ToCharArray();
             Array.Reverse(ca);
-            return new string(ca);
+            return new BigInt(new string(ca));
         }
 
         static long prob056()
@@ -2185,12 +2057,12 @@ namespace ProjectEulerSolvers
             {
                 for (int j = 1; j < 100; j++)
                 {
-                    string n = prob029BigNumPow(i, j);
-                    long snd = prob056SumNumberDigital(n);
+                    BigInt n = BigInt.Power(i, j);
+                    long snd = prob056SumNumberDigital(n.ToString());
                     if (snd > rst)
                     {
                         rst = snd;
-                        Console.WriteLine("current top is {0}(for {1} composited by {2}pow{3})", rst, n, i, j);
+                        outputLine(string.Format("current top is {0}(for {1} composited by {2}pow{3})", rst, n, i, j));
                     }
                 }
             }
@@ -2242,10 +2114,10 @@ namespace ProjectEulerSolvers
                 node2 = node1 + increment;
                 node3 = node2 + increment;
                 node4 = node3 + increment;
-                numerator += prob007IsPrime(node1) ? 1 : 0;
-                numerator += prob007IsPrime(node2) ? 1 : 0;
-                numerator += prob007IsPrime(node3) ? 1 : 0;
-                numerator += prob007IsPrime(node4) ? 1 : 0;
+                numerator += Tools.IsPrime(node1) ? 1 : 0;
+                numerator += Tools.IsPrime(node2) ? 1 : 0;
+                numerator += Tools.IsPrime(node3) ? 1 : 0;
+                numerator += Tools.IsPrime(node4) ? 1 : 0;
                 double ratio = numerator / denominator;
                 watch.Stop();
                 outputLine(string.Format("size: {0}, ratio: {1:N6}", rst, ratio));

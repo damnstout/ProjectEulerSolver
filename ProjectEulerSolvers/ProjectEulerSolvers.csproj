@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Emil.GMP, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Emil.GMP.dll</HintPath>
+    </Reference>
     <Reference Include="Oyster.IntX, Version=0.9.3.3, Culture=neutral, PublicKeyToken=1744b76c74eaee1e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Oyster.IntX.dll</HintPath>
@@ -56,6 +60,9 @@
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="libgmp-3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Oyster.IntX.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

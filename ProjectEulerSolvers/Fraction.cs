@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Oyster.Math;
+using Emil.GMP;
 
 namespace ProjectEulerSolvers
 {
     class Fraction
     {
-        private long _num;
-        private long _deno;
-        public long Numerator { get { return _num; } set { _deno = value; } }
-        public long Denominator 
+        private BigInt _num;
+        private BigInt _deno;
+        public BigInt Numerator { get { return _num; } set { _deno = value; } }
+        public BigInt Denominator 
         {
             get { return _deno; }
             set
@@ -22,24 +22,24 @@ namespace ProjectEulerSolvers
             }
         }
 
-        public Fraction(long num, long deno)
+        public Fraction(BigInt num, BigInt deno)
         {
-            long gcd = Math.Abs(Tools.GCD(num, deno));
+            BigInt gcd = Tools.GCD(num, deno);
             _num = num / gcd;
             _deno = deno / gcd;
         }
 
         public static Fraction operator +(Fraction a, Fraction b)
         {
-            long deno = a.Denominator * b.Denominator;
-            long num = (a.Numerator * b.Denominator) + (b.Numerator * a.Denominator);
+            BigInt deno = a.Denominator * b.Denominator;
+            BigInt num = (a.Numerator * b.Denominator) + (b.Numerator * a.Denominator);
             return new Fraction(num, deno);
         }
 
         public static Fraction operator -(Fraction a, Fraction b)
         {
-            long deno = a.Denominator * b.Denominator;
-            long num = (a.Numerator * b.Denominator) - (b.Numerator * a.Denominator);
+            BigInt deno = a.Denominator * b.Denominator;
+            BigInt num = (a.Numerator * b.Denominator) - (b.Numerator * a.Denominator);
             return new Fraction(num, deno);
         }
 
