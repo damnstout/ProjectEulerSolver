@@ -22,7 +22,7 @@ namespace ProjectEulerSolvers
 
         static void Main(string[] args)
         {
-            Executor e = new Executor(prob012);
+            Executor e = new Executor(prob061);
             watch.Start();
             long rst = e();
             watch.Stop();

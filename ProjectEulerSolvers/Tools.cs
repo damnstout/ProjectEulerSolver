@@ -106,6 +106,16 @@ namespace ProjectEulerSolvers
         }
 
         /// <summary>
+        /// 求第N个四方数（Square Number）
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static long SquareN(long n)
+        {
+            return n * n;
+        }
+
+        /// <summary>
         /// 整除数个数
         /// </summary>
         /// <param name="n"></param>
