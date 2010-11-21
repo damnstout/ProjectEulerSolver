@@ -11,12 +11,16 @@ using Emil.GMP;
 
 namespace ProjectEulerSolvers
 {
+    delegate long polygonN(long n);
+
     delegate long Executor();
 
     class Program
     {
         static Stopwatch watch = new Stopwatch();
 
+        static void outputLine(string format, params object[] arg) { outputLine(string.Format(format, arg)); }
+        static void outputLine(object o) { outputLine(o.ToString()); }
         static void outputLine(string s) { watch.Stop(); Console.WriteLine(s); watch.Start(); }
         static void output(string s) { watch.Stop(); Console.Write(s); watch.Start(); }
 
@@ -601,7 +605,7 @@ namespace ProjectEulerSolvers
                     n += tmp;
                 }
             }
-            outputLine(n.ToString());
+            outputLine(n);
             long rst = 0;
             char[] na = n.ToString().ToCharArray();
             for (int i = 0; i < na.Length; i++)
@@ -822,7 +826,6 @@ namespace ProjectEulerSolvers
             int divisor = 1;
             while (divisor % n != 0 && !divisorHistory.Contains(divisor % n)) 
             {
-                //divisorHistory.Add(divisor);
                 divisor = divisor % n;
                 while (divisor < n)
                 {
@@ -830,7 +833,6 @@ namespace ProjectEulerSolvers
                     divisor *= 10;
                     counter++;
                 }
-                //counter++;
             }
             Console.WriteLine("result: {0}", counter);
             return counter;
@@ -2260,7 +2262,39 @@ namespace ProjectEulerSolvers
 
         static long prob061()
         {
+            List<long> triangles = prob061PolygonList(new polygonN(Tools.TriangleN)),
+                squares = prob061PolygonList(new polygonN(Tools.SquareN)),
+                pentagonals = prob061PolygonList(new polygonN(Tools.PentagonalN)),
+                hexagonals = prob061PolygonList(new polygonN(Tools.HexagonalN)),
+                heptagonals = prob061PolygonList(new polygonN(Tools.HeptagonalN)),
+                octagonals = prob061PolygonList(new polygonN(Tools.OctagonalN));
+            outputLine("{0},{1},{2},{3},{4},{5}", triangles.Count, squares.Count, pentagonals.Count, hexagonals.Count, heptagonals.Count, octagonals.Count);
+            int counter = 0;
+            foreach (long triangle in triangles)
+            {
+                outputLine(triangle); foreach (long square in squares) { foreach (long pentagonal in pentagonals) { foreach (long hexagonal in heptagonals) { foreach (long heptagonal in heptagonals) { foreach (long octagonal in octagonals) {
+                        counter++;
+            }}}}}}
+            outputLine(counter);
             long rst = 0;
+            return rst;
+        }
+
+        static bool prob061IsCyclic(long[] nums)
+        {
+            return false;
+        }
+
+        static List<long> prob061PolygonList(polygonN algorithm)
+        {
+            List<long> rst = new List<long>();
+            for (long n = 1; ; n++ )
+            {
+                long pn = algorithm(n);
+                if (1000 > pn) continue;
+                if (9999 < pn) break;
+                rst.Add(pn);
+            }
             return rst;
         }
     }

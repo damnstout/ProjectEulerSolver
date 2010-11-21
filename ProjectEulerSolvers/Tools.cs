@@ -105,14 +105,29 @@ namespace ProjectEulerSolvers
             return n * (n + 1) / 2;
         }
 
-        /// <summary>
-        /// 求第N个四方数（Square Number）
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
         public static long SquareN(long n)
         {
             return n * n;
+        }
+
+        public static long PentagonalN(long n)
+        {
+            return n * (3 * n - 1) / 2;
+        }
+
+        public static long HexagonalN(long n)
+        {
+            return n * (2 * n - 1);
+        }
+
+        public static long HeptagonalN(long n)
+        {
+            return n * (5 * n - 3) / 2;
+        }
+
+        public static long OctagonalN(long n)
+        {
+            return n * (3 * n - 2);
         }
 
         /// <summary>
