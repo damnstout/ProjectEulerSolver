@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fraction.cs" />
+    <Compile Include="Permutater.cs" />
     <Compile Include="Prob054PorkerSuite.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

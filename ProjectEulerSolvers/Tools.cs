@@ -23,12 +23,6 @@ namespace ProjectEulerSolvers
             return GCD(b, a % b);
         }
 
-        public static BigInt GCD(BigInt a, BigInt b)
-        {
-            if (a % b == 0) return b;
-            return GCD(b, a % b);
-        }
-
         /// <summary>
         /// 最小公倍数
         /// </summary>
@@ -36,11 +30,6 @@ namespace ProjectEulerSolvers
         /// <param name="b"></param>
         /// <returns></returns>
         public static long LCM(long a, long b)
-        {
-            return (a * b) / GCD(a, b);
-        }
-
-        public static BigInt LCM(BigInt a, BigInt b)
         {
             return (a * b) / GCD(a, b);
         }

@@ -11,7 +11,7 @@ using Emil.GMP;
 
 namespace ProjectEulerSolvers
 {
-    delegate long polygonN(long n);
+    delegate long PolygonN(long n);
 
     delegate long Executor();
 
@@ -19,14 +19,14 @@ namespace ProjectEulerSolvers
     {
         static Stopwatch watch = new Stopwatch();
 
-        static void outputLine(string format, params object[] arg) { outputLine(string.Format(format, arg)); }
-        static void outputLine(object o) { outputLine(o.ToString()); }
-        static void outputLine(string s) { watch.Stop(); Console.WriteLine(s); watch.Start(); }
-        static void output(string s) { watch.Stop(); Console.Write(s); watch.Start(); }
+        static void OutputLine(string format, params object[] arg) { OutputLine(string.Format(format, arg)); }
+        static void OutputLine(object o) { OutputLine(o.ToString()); }
+        static void OutputLine(string s) { watch.Stop(); Console.WriteLine(s); watch.Start(); }
+        static void Output(string s) { watch.Stop(); Console.Write(s); watch.Start(); }
 
         static void Main(string[] args)
         {
-            Executor e = new Executor(prob061);
+            Executor e = new Executor(Prob062);
             watch.Start();
             long rst = e();
             watch.Stop();
@@ -34,7 +34,7 @@ namespace ProjectEulerSolvers
             Console.WriteLine("time cost is: {0}ms", watch.ElapsedMilliseconds);
         }
 
-        static long prob001()
+        static long Prob001()
         {
             long counter = 0;
             for (int i = 1; i < 1000; i++ )
@@ -47,7 +47,7 @@ namespace ProjectEulerSolvers
             return counter;
         }
 
-        static long prob002()
+        static long Prob002()
         {
             long counter = 0;
             long fab0 = 1;
@@ -63,7 +63,7 @@ namespace ProjectEulerSolvers
             return counter;
         }
 
-        static long prob003()
+        static long Prob003()
         {
             long number = 600851475143L;
             int divisor = 2;
@@ -79,12 +79,12 @@ namespace ProjectEulerSolvers
             return divisor;
         }
 
-        static long prob004()
+        static long Prob004()
         {
             long ceil = 999 * 999;
             for (long i = ceil; i > 0; i-- )
             {
-                if (Tools.IsPalindromic(i) && prob004IsResolvable((int) i))
+                if (Tools.IsPalindromic(i) && Prob004IsResolvable((int) i))
                 {
                     return i;
                 }
@@ -92,7 +92,7 @@ namespace ProjectEulerSolvers
             return 1;
         }
 
-        static bool prob004IsResolvable(int num)
+        static bool Prob004IsResolvable(int num)
         {
             for (int i = 999; i > 99; i-- )
             {
@@ -105,21 +105,21 @@ namespace ProjectEulerSolvers
             return false;
         }
 
-        static long prob005()
+        static long Prob005()
         {
-            return prob005Recur(20);
+            return Prob005Recur(20);
         }
 
-        static long prob005Recur(int n)
+        static long Prob005Recur(int n)
         {
             if (n == 1)
             {
                 return 1;
             }
-            return Tools.LCM(n, prob005Recur(n - 1));
+            return Tools.LCM(n, Prob005Recur(n - 1));
         }
 
-        static long prob006()
+        static long Prob006()
         {
             long sumSquare = 0;
             long squareSum = 0;
@@ -132,7 +132,7 @@ namespace ProjectEulerSolvers
             return squareSum - sumSquare;
         }
 
-        static long prob007()
+        static long Prob007()
         {
             int counter = 0;
             long n = 1;
@@ -147,7 +147,7 @@ namespace ProjectEulerSolvers
             return n;
         }
 
-        static long prob008()
+        static long Prob008()
         {
             int[] num = {7,3,1,6,7,1,7,6,5,3,1,3,3,0,6,2,4,9,1,9,2,2,5,1,1,9,6,7,4,4,2,6,5,7,4,7,4,2,3,5,5,3,4,9,1,9,4,9,3,4,9,6,9,8,3,5,2,0,3,1,2,7,7,4,5,0,6,3,2,6,2,3,9,5,7,8,3,1,8,0,1,6,9,8,4,8,0,1,8,6,9,4,7,8,8,5,1,8,4,3,8,5,8,6,1,5,6,0,7,8,9,1,1,2,9,4,9,4,9,5,4,5,9,5,0,1,7,3,7,9,5,8,3,3,1,9,5,2,8,5,3,2,0,8,8,0,5,5,1,1,1,2,5,4,0,6,9,8,7,4,7,1,5,8,5,2,3,8,6,3,0,5,0,7,1,5,6,9,3,2,9,0,9,6,3,2,9,5,2,2,7,4,4,3,0,4,3,5,5,7,6,6,8,9,6,6,4,8,9,5,0,4,4,5,2,4,4,5,2,3,1,6,1,7,3,1,8,5,6,4,0,3,0,9,8,7,1,1,1,2,1,7,2,2,3,8,3,1,1,3,6,2,2,2,9,8,9,3,4,2,3,3,8,0,3,0,8,1,3,5,3,3,6,2,7,6,6,1,4,2,8,2,8,0,6,4,4,4,4,8,6,6,4,5,2,3,8,7,4,9,3,0,3,5,8,9,0,7,2,9,6,2,9,0,4,9,1,5,6,0,4,4,0,7,7,2,3,9,0,7,1,3,8,1,0,5,1,5,8,5,9,3,0,7,9,6,0,8,6,6,7,0,1,7,2,4,2,7,1,2,1,8,8,3,9,9,8,7,9,7,9,0,8,7,9,2,2,7,4,9,2,1,9,0,1,6,9,9,7,2,0,8,8,8,0,9,3,7,7,6,6,5,7,2,7,3,3,3,0,0,1,0,5,3,3,6,7,8,8,1,2,2,0,2,3,5,4,2,1,8,0,9,7,5,1,2,5,4,5,4,0,5,9,4,7,5,2,2,4,3,5,2,5,8,4,9,0,7,7,1,1,6,7,0,5,5,6,0,1,3,6,0,4,8,3,9,5,8,6,4,4,6,7,0,6,3,2,4,4,1,5,7,2,2,1,5,5,3,9,7,5,3,6,9,7,8,1,7,9,7,7,8,4,6,1,7,4,0,6,4,9,5,5,1,4,9,2,9,0,8,6,2,5,6,9,3,2,1,9,7,8,4,6,8,6,2,2,4,8,2,8,3,9,7,2,2,4,1,3,7,5,6,5,7,0,5,6,0,5,7,4,9,0,2,6,1,4,0,7,9,7,2,9,6,8,6,5,2,4,1,4,5,3,5,1,0,0,4,7,4,8,2,1,6,6,3,7,0,4,8,4,4,0,3,1,9,9,8,9,0,0,0,8,8,9,5,2,4,3,4,5,0,6,5,8,5,4,1,2,2,7,5,8,8,6,6,6,8,8,1,1,6,4,2,7,1,7,1,4,7,9,9,2,4,4,4,2,9,2,8,2,3,0,8,6,3,4,6,5,6,7,4,8,1,3,9,1,9,1,2,3,1,6,2,8,2,4,5,8,6,1,7,8,6,6,4,5,8,3,5,9,1,2,4,5,6,6,5,2,9,4,7,6,5,4,5,6,8,2,8,4,8,9,1,2,8,8,3,1,4,2,6,0,7,6,9,0,0,4,2,2,4,2,1,9,0,2,2,6,7,1,0,5,5,6,2,6,3,2,1,1,1,1,1,0,9,3,7,0,5,4,4,2,1,7,5,0,6,9,4,1,6,5,8,9,6,0,4,0,8,0,7,1,9,8,4,0,3,8,5,0,9,6,2,4,5,5,4,4,4,3,6,2,9,8,1,2,3,0,9,8,7,8,7,9,9,2,7,2,4,4,2,8,4,9,0,9,1,8,8,8,4,5,8,0,1,5,6,1,6,6,0,9,7,9,1,9,1,3,3,8,7,5,4,9,9,2,0,0,5,2,4,0,6,3,6,8,9,9,1,2,5,6,0,7,1,7,6,0,6,0,5,8,8,6,1,1,6,4,6,7,1,0,9,4,0,5,0,7,7,5,4,1,0,0,2,2,5,6,9,8,3,1,5,5,2,0,0,0,5,5,9,3,5,7,2,9,7,2,5,7,1,6,3,6,2,6,9,5,6,1,8,8,2,6,7,0,4,2,8,2,5,2,4,8,3,6,0,0,8,2,3,2,5,7,5,3,0,4,2,0,7,5,2,9,6,3,4,5,0};
             long rst = 0;
@@ -163,7 +163,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob009()
+        static long Prob009()
         {
             int a = 1, b, c;
             while (a < 333)
@@ -184,7 +184,7 @@ namespace ProjectEulerSolvers
             return 0;
         }
 
-        static long prob010()
+        static long Prob010()
         {
             long n = 2;
             long sum = 0;
@@ -199,7 +199,7 @@ namespace ProjectEulerSolvers
             return sum;
         }
 
-        static long prob011()
+        static long Prob011()
         {
             int[,] input = new int[,] { { 08, 02, 22, 97, 38, 15, 00, 40, 00, 75, 04, 05, 07, 78, 52, 12, 50, 77, 91, 08 }, { 49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 04, 56, 62, 00 }, { 81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 03, 49, 13, 36, 65 }, { 52, 70, 95, 23, 04, 60, 11, 42, 69, 24, 68, 56, 01, 32, 56, 71, 37, 02, 36, 91 }, { 22, 31, 16, 71, 51, 67, 63, 89, 41, 92, 36, 54, 22, 40, 40, 28, 66, 33, 13, 80 }, { 24, 47, 32, 60, 99, 03, 45, 02, 44, 75, 33, 53, 78, 36, 84, 20, 35, 17, 12, 50 }, { 32, 98, 81, 28, 64, 23, 67, 10, 26, 38, 40, 67, 59, 54, 70, 66, 18, 38, 64, 70 }, { 67, 26, 20, 68, 02, 62, 12, 20, 95, 63, 94, 39, 63, 08, 40, 91, 66, 49, 94, 21 }, { 24, 55, 58, 05, 66, 73, 99, 26, 97, 17, 78, 78, 96, 83, 14, 88, 34, 89, 63, 72 }, { 21, 36, 23, 09, 75, 00, 76, 44, 20, 45, 35, 14, 00, 61, 33, 97, 34, 31, 33, 95 }, { 78, 17, 53, 28, 22, 75, 31, 67, 15, 94, 03, 80, 04, 62, 16, 14, 09, 53, 56, 92 }, { 16, 39, 05, 42, 96, 35, 31, 47, 55, 58, 88, 24, 00, 17, 54, 24, 36, 29, 85, 57 }, { 86, 56, 00, 48, 35, 71, 89, 07, 05, 44, 44, 37, 44, 60, 21, 58, 51, 54, 17, 58 }, { 19, 80, 81, 68, 05, 94, 47, 69, 28, 73, 92, 13, 86, 52, 17, 77, 04, 89, 55, 40 }, { 04, 52, 08, 83, 97, 35, 99, 16, 07, 97, 57, 32, 16, 26, 26, 79, 33, 27, 98, 66 }, { 88, 36, 68, 87, 57, 62, 20, 72, 03, 46, 33, 67, 46, 55, 12, 32, 63, 93, 53, 69 }, { 04, 42, 16, 73, 38, 25, 39, 11, 24, 94, 72, 18, 08, 46, 29, 32, 40, 62, 76, 36 }, { 20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 04, 36, 16 }, { 20, 73, 35, 29, 78, 31, 90, 01, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 05, 54 }, { 01, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 01, 89, 19, 67, 48 }};
             long rst = 0;
@@ -207,13 +207,13 @@ namespace ProjectEulerSolvers
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    rst = Math.Max(rst, prob011PointVal(input, i, j));
+                    rst = Math.Max(rst, Prob011PointVal(input, i, j));
                 }
             }
             return rst;
         }
 
-        static long prob011PointVal(int[,] input, int i, int j)
+        static long Prob011PointVal(int[,] input, int i, int j)
         {
             long bottomLeft = 0, bottom = 0, bottomRight = 0, right = 0;
             if (i > 2 && j < 17)
@@ -235,7 +235,7 @@ namespace ProjectEulerSolvers
             return Math.Max(bottomLeft, Math.Max(bottom, Math.Max(bottomRight, right)));
         }
 
-        static long prob012()
+        static long Prob012()
         {
             int i = 1;
             long rst = Tools.TriangleN(i);
@@ -247,7 +247,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob013()
+        static long Prob013()
         {
             string[] vals = { "37107287533902102798797998220837590246510135740250", "46376937677490009712648124896970078050417018260538", "74324986199524741059474233309513058123726617309629", "91942213363574161572522430563301811072406154908250", "23067588207539346171171980310421047513778063246676", "89261670696623633820136378418383684178734361726757", "28112879812849979408065481931592621691275889832738", "44274228917432520321923589422876796487670272189318", "47451445736001306439091167216856844588711603153276", "70386486105843025439939619828917593665686757934951", "62176457141856560629502157223196586755079324193331", "64906352462741904929101432445813822663347944758178", "92575867718337217661963751590579239728245598838407", "58203565325359399008402633568948830189458628227828", "80181199384826282014278194139940567587151170094390", "35398664372827112653829987240784473053190104293586", "86515506006295864861532075273371959191420517255829", "71693888707715466499115593487603532921714970056938", "54370070576826684624621495650076471787294438377604", "53282654108756828443191190634694037855217779295145", "36123272525000296071075082563815656710885258350721", "45876576172410976447339110607218265236877223636045", "17423706905851860660448207621209813287860733969412", "81142660418086830619328460811191061556940512689692", "51934325451728388641918047049293215058642563049483", "62467221648435076201727918039944693004732956340691", "15732444386908125794514089057706229429197107928209", "55037687525678773091862540744969844508330393682126", "18336384825330154686196124348767681297534375946515", "80386287592878490201521685554828717201219257766954", "78182833757993103614740356856449095527097864797581", "16726320100436897842553539920931837441497806860984", "48403098129077791799088218795327364475675590848030", "87086987551392711854517078544161852424320693150332", "59959406895756536782107074926966537676326235447210", "69793950679652694742597709739166693763042633987085", "41052684708299085211399427365734116182760315001271", "65378607361501080857009149939512557028198746004375", "35829035317434717326932123578154982629742552737307", "94953759765105305946966067683156574377167401875275", "88902802571733229619176668713819931811048770190271", "25267680276078003013678680992525463401061632866526", "36270218540497705585629946580636237993140746255962", "24074486908231174977792365466257246923322810917141", "91430288197103288597806669760892938638285025333403", "34413065578016127815921815005561868836468420090470", "23053081172816430487623791969842487255036638784583", "11487696932154902810424020138335124462181441773470", "63783299490636259666498587618221225225512486764533", "67720186971698544312419572409913959008952310058822", "95548255300263520781532296796249481641953868218774", "76085327132285723110424803456124867697064507995236", "37774242535411291684276865538926205024910326572967", "23701913275725675285653248258265463092207058596522", "29798860272258331913126375147341994889534765745501", "18495701454879288984856827726077713721403798879715", "38298203783031473527721580348144513491373226651381", "34829543829199918180278916522431027392251122869539", "40957953066405232632538044100059654939159879593635", "29746152185502371307642255121183693803580388584903", "41698116222072977186158236678424689157993532961922", "62467957194401269043877107275048102390895523597457", "23189706772547915061505504953922979530901129967519", "86188088225875314529584099251203829009407770775672", "11306739708304724483816533873502340845647058077308", "82959174767140363198008187129011875491310547126581", "97623331044818386269515456334926366572897563400500", "42846280183517070527831839425882145521227251250327", "55121603546981200581762165212827652751691296897789", "32238195734329339946437501907836945765883352399886", "75506164965184775180738168837861091527357929701337", "62177842752192623401942399639168044983993173312731", "32924185707147349566916674687634660915035914677504", "99518671430235219628894890102423325116913619626622", "73267460800591547471830798392868535206946944540724", "76841822524674417161514036427982273348055556214818", "97142617910342598647204516893989422179826088076852", "87783646182799346313767754307809363333018982642090", "10848802521674670883215120185883543223812876952786", "71329612474782464538636993009049310363619763878039", "62184073572399794223406235393808339651327408011116", "66627891981488087797941876876144230030984490851411", "60661826293682836764744779239180335110989069790714", "85786944089552990653640447425576083659976645795096", "66024396409905389607120198219976047599490197230297", "64913982680032973156037120041377903785566085089252", "16730939319872750275468906903707539413042652315011", "94809377245048795150954100921645863754710598436791", "78639167021187492431995700641917969777599028300699", "15368713711936614952811305876380278410754449733078", "40789923115535562561142322423255033685442488917353", "44889911501440648020369068063960672322193204149535", "41503128880339536053299340368006977710650566631954", "81234880673210146739058568557934581403627822703280", "82616570773948327592232845941706525094512325230608", "22918802058777319719839450180888072429661980811197", "77158542502016545090413245809786882778948721859617", "72107838435069186155435662884062257473692284509516", "20849603980134001723930671666823555245252804609722", "53503534226472524250874054075591789781264330331690" };
             BigInt rst = 0;
@@ -258,13 +258,13 @@ namespace ProjectEulerSolvers
             return long.Parse(rst.ToString().Substring(0, 10));
         }
 
-        static long prob014()
+        static long Prob014()
         {
             long rst = 0;
             int currCount = 0;
             for (long i = 999999; i > 0; i-- )
             {
-                int tmpCount = prob014CountCollatz(i);
+                int tmpCount = Prob014CountCollatz(i);
                 if (currCount < tmpCount)
                 {
                     rst = i;
@@ -275,7 +275,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob014CountCollatz(long n)
+        static int Prob014CountCollatz(long n)
         {
             int counter = 0;
             while(n != 1)
@@ -293,21 +293,21 @@ namespace ProjectEulerSolvers
             return counter;
         }
 
-        static long[,] prob015Register = new long[50, 50];
+        static long[,] Prob015Register = new long[50, 50];
 
-        static long prob015(int x, int y)
+        static long Prob015(int x, int y)
         {
-            if (0 != prob015Register[x, y])
+            if (0 != Prob015Register[x, y])
             {
-                return prob015Register[x, y];
+                return Prob015Register[x, y];
             }
             Console.WriteLine("{0},{1}", x, y);
-            long rst = x * y == 0 ? 1 : prob015(x - 1, y) + prob015(x, y - 1);
-            prob015Register[x, y] = rst;
+            long rst = x * y == 0 ? 1 : Prob015(x - 1, y) + Prob015(x, y - 1);
+            Prob015Register[x, y] = rst;
             return  rst;
         }
 
-        static long prob016()
+        static long Prob016()
         {
             BigInt n = 1;
             for (int i = 0; i < 1000; i++ )
@@ -323,19 +323,19 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob017()
+        static long Prob017()
         {
             long rst = 0;
             for (int i = 1; i <= 1000; i++ )
             {
-                string a = prob017ItoA(i);
+                string a = Prob017ItoA(i);
                 Console.WriteLine(a);
                 rst += a.Replace("-", "").Replace(" ", "").Length;
             }
             return rst;
         }
 
-        static string prob017ItoA(int i)
+        static string Prob017ItoA(int i)
         {
             if (i == 1000)
             {
@@ -343,15 +343,15 @@ namespace ProjectEulerSolvers
             }
             else if (i < 10)
             {
-                return prob017ItoAUnit(i);
+                return Prob017ItoAUnit(i);
             }
             else if (i >= 10 && i < 100)
             {
-                return prob017ItoADecade(i);
+                return Prob017ItoADecade(i);
             }
             else if (i >= 100 && i < 1000)
             {
-                return prob017ItoAHundreds(i);
+                return Prob017ItoAHundreds(i);
             }
             else
             {
@@ -359,16 +359,16 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static string prob017ItoAHundreds(int i)
+        static string Prob017ItoAHundreds(int i)
         {
-            return prob017ItoAUnit(i / 100) + " hundred" + (i % 100 == 0 ? "" : (" and " + prob017ItoADecade(i % 100)));
+            return Prob017ItoAUnit(i / 100) + " hundred" + (i % 100 == 0 ? "" : (" and " + Prob017ItoADecade(i % 100)));
         }
 
-        static string prob017ItoADecade(int i)
+        static string Prob017ItoADecade(int i)
         {
             if (i < 10)
             {
-                return prob017ItoAUnit(i);
+                return Prob017ItoAUnit(i);
             }
             switch (i)
             {
@@ -393,11 +393,11 @@ namespace ProjectEulerSolvers
                 case 19:
                     return "nineteen";
                 default:
-                    return prob017ItoADecadeNormal(i) + (i % 10 == 0 ? "" : ("-" + prob017ItoAUnit(i % 10)));
+                    return Prob017ItoADecadeNormal(i) + (i % 10 == 0 ? "" : ("-" + Prob017ItoAUnit(i % 10)));
             }
         }
 
-        static string prob017ItoADecadeNormal(int i)
+        static string Prob017ItoADecadeNormal(int i)
         {
             switch(i / 10)
             {
@@ -422,7 +422,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static string prob017ItoAUnit(int i)
+        static string Prob017ItoAUnit(int i)
         {
             switch (i)
             {
@@ -449,12 +449,12 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static long prob018()
+        static long Prob018()
         {
             int size = 100;
             int mask = 100;
             int[,] data = new int[size, size];
-            prob018Init("prob067_large_triangle.txt", data, size, mask);
+            Prob018Init("Prob067_large_triangle.txt", data, size, mask);
             int[,] drst = new int[size, size];
             bool[,] solved = new bool[size, size];
             for (int i = 0; i < size; i++ )
@@ -467,8 +467,8 @@ namespace ProjectEulerSolvers
             }
             drst[0, 0] = data[0, 0];
             solved[0, 0] = true;
-            prob018Dijkstra(data, drst, size, solved);
-            prob018DijkstraPrint(drst, size, mask);
+            Prob018Dijkstra(data, drst, size, solved);
+            Prob018DijkstraPrint(drst, size, mask);
             long min = int.MaxValue;
             for (int j = 0; j < size; j++ )
             {
@@ -480,7 +480,7 @@ namespace ProjectEulerSolvers
             return (mask * size) - min;
         }
 
-        static void prob018Init(string filename, int[,] data, int size, int mask)
+        static void Prob018Init(string filename, int[,] data, int size, int mask)
         {
             for (int i = 0; i < size; i++ )
             {
@@ -504,23 +504,23 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static void prob018Dijkstra(int[,] data, int[,] drst, int size, bool[,] solvedd)
+        static void Prob018Dijkstra(int[,] data, int[,] drst, int size, bool[,] solvedd)
         {
             KeyValuePair<int, int> min = new KeyValuePair<int, int>(0, 0);
-            prob018DijkstraRelax(data, drst, size, min);
+            Prob018DijkstraRelax(data, drst, size, min);
             int totalNodes = ((size + 1) * size / 2 - 1);
             for (int i = 0; i < totalNodes; i++ )
             {
                 Console.WriteLine("current progress: {0:D}/{1:D}", i, totalNodes);
-                min = prob018DijkstraFindMin(drst, size, solvedd);
+                min = Prob018DijkstraFindMin(drst, size, solvedd);
                 solvedd[min.Value, min.Key] = true;
-                prob018DijkstraRelax(data, drst, size, min);
+                Prob018DijkstraRelax(data, drst, size, min);
             }
         }
 
-        private static void prob018DijkstraRelax(int[,] data, int[,] drst, int size, KeyValuePair<int, int> min)
+        private static void Prob018DijkstraRelax(int[,] data, int[,] drst, int size, KeyValuePair<int, int> min)
         {
-            foreach (KeyValuePair<int, int> p in prob018NextPositions(min, size))
+            foreach (KeyValuePair<int, int> p in Prob018NextPositions(min, size))
             {
                 int newVal = drst[min.Value, min.Key] + data[p.Value, p.Key];
                 if (drst[p.Value, p.Key] > newVal)
@@ -530,7 +530,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static KeyValuePair<int, int> prob018DijkstraFindMin(int[,] drst, int size, bool[,] solvedd)
+        static KeyValuePair<int, int> Prob018DijkstraFindMin(int[,] drst, int size, bool[,] solvedd)
         {
             int minVal = int.MaxValue;
             KeyValuePair<int, int> min = new KeyValuePair<int, int>(0, 0);
@@ -550,7 +550,7 @@ namespace ProjectEulerSolvers
             return min;
         }
 
-        static void prob018DijkstraPrint(int[,] drst, int size, int mask)
+        static void Prob018DijkstraPrint(int[,] drst, int size, int mask)
         {
             for (int i = 0; i < size; i++)
             {
@@ -562,7 +562,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static KeyValuePair<int, int>[] prob018NextPositions(KeyValuePair<int, int> p, int size)
+        static KeyValuePair<int, int>[] Prob018NextPositions(KeyValuePair<int, int> p, int size)
         {
             int i = p.Key, j = p.Value;
             if (j >= size - 1 || i > j)
@@ -576,7 +576,7 @@ namespace ProjectEulerSolvers
             return new KeyValuePair<int, int>[] { new KeyValuePair<int, int>(i, j + 1), new KeyValuePair<int, int>(i + 1, j + 1) };
         }
 
-        static long prob019()
+        static long Prob019()
         {
             DateTime dt = DateTime.Parse("1901-01-01");
             DateTime end = DateTime.Parse("2000-12-31");
@@ -593,7 +593,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob020()
+        static long Prob020()
         {
             BigInt n = 1;
             for (int i = 0; i < 100; i++ )
@@ -605,7 +605,7 @@ namespace ProjectEulerSolvers
                     n += tmp;
                 }
             }
-            outputLine(n);
+            OutputLine(n);
             long rst = 0;
             char[] na = n.ToString().ToCharArray();
             for (int i = 0; i < na.Length; i++)
@@ -615,7 +615,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob021()
+        static long Prob021()
         {
             ICollection<int> amicableNumbers = new HashSet<int>();
             long rst = 0;
@@ -625,12 +625,12 @@ namespace ProjectEulerSolvers
                 {
                     continue;
                 }
-                int factorsSum = prob021SumFactors(prob021ProbFactors(i));
+                int factorsSum = Prob021SumFactors(Prob021ProbFactors(i));
                 if (factorsSum == i)
                 {
                     continue;
                 }
-                if (prob021SumFactors(prob021ProbFactors(factorsSum)) == i)
+                if (Prob021SumFactors(Prob021ProbFactors(factorsSum)) == i)
                 {
                     Console.WriteLine("find 1 pair of amicable numbers: {0:D} and {1:D}", i, factorsSum);
                     amicableNumbers.Add(i);
@@ -644,7 +644,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob021SumFactors(HashSet<int> factors)
+        static int Prob021SumFactors(HashSet<int> factors)
         {
             int rst = 0;
             foreach (int n in factors)
@@ -654,7 +654,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static HashSet<int> prob021ProbFactors(int n)
+        static HashSet<int> Prob021ProbFactors(int n)
         {
             int limit = (int) Math.Sqrt(n) + 1;
             HashSet<int> rst = new HashSet<int>();
@@ -670,9 +670,9 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob022()
+        static long Prob022()
         {
-            StreamReader r = new StreamReader("prob022_names.txt");
+            StreamReader r = new StreamReader("Prob022_names.txt");
             string line = r.ReadLine();
             line = line.Replace("\"", "");
             string[] a = line.Split(',');
@@ -694,15 +694,15 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob023()
+        static long Prob023()
         {
             List<int> abundantList = new List<int>();
             HashSet<int> abundantSet = new HashSet<int>();
-            prob023ProbAbundantNums(abundantList, abundantSet);
+            Prob023ProbAbundantNums(abundantList, abundantSet);
             long rst = 0;
             for (int n = 1; n <= 28123; n++ )
             {
-                if (!prob023IsAbundantSum(abundantList, abundantSet, n))
+                if (!Prob023IsAbundantSum(abundantList, abundantSet, n))
                 {
                     rst += n;
                 }
@@ -710,7 +710,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static bool prob023IsAbundantSum(List<int> l, HashSet<int> s, int n)
+        static bool Prob023IsAbundantSum(List<int> l, HashSet<int> s, int n)
         {
             foreach (int i in l)
             {
@@ -727,11 +727,11 @@ namespace ProjectEulerSolvers
             return false;
         }
 
-        static void prob023ProbAbundantNums(List<int> l, HashSet<int> s)
+        static void Prob023ProbAbundantNums(List<int> l, HashSet<int> s)
         {
             for (int i = 1; i <= 28123; i++ )
             {
-                if (i < prob021SumFactors(prob021ProbFactors(i)))
+                if (i < Prob021SumFactors(Prob021ProbFactors(i)))
                 {
                     l.Add(i);
                     s.Add(i);
@@ -739,7 +739,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static long prob024()
+        static long Prob024()
         {
             string rst = "";
             int[] initA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -749,7 +749,7 @@ namespace ProjectEulerSolvers
             List<int> lst = initA.ToList();
             while (target != 0)
             {
-                long factorial = prob024Factorial(sortAll);
+                long factorial = Prob024Factorial(sortAll);
                 int sortAllCount = (int) (target / factorial);
                 rst += Convert.ToString(lst[sortAllCount]);
                 lst.RemoveAt(sortAllCount);
@@ -764,7 +764,7 @@ namespace ProjectEulerSolvers
             return Convert.ToInt64(rst);
         }
 
-        static long prob024Factorial(int n)
+        static long Prob024Factorial(int n)
         {
             if (n == 0)
             {
@@ -774,10 +774,10 @@ namespace ProjectEulerSolvers
             {
                 return 1;
             }
-            return prob024Factorial(n - 1) * n;
+            return Prob024Factorial(n - 1) * n;
         }
 
-        static long prob025()
+        static long Prob025()
         {
             BigInt f1 = 1, f2 = 1;
             long counter = 3;
@@ -792,7 +792,7 @@ namespace ProjectEulerSolvers
                 {
                     f1 = tmp;
                 }
-                outputLine(string.Format("{0} is {1}th Fibonacci", tmp, counter));
+                OutputLine(string.Format("{0} is {1}th Fibonacci", tmp, counter));
                 if (tmp.ToString().Length >= 1000)
                 {
                     return counter;
@@ -801,13 +801,13 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static long prob026()
+        static long Prob026()
         {
             long rst = 1;
             int lagestLen = 1;
             for (int n = 1; n <= 1000; n++ )
             {
-                int currLen = prob026DecimalFractionLen(n);
+                int currLen = Prob026DecimalFractionLen(n);
                 if ( currLen > lagestLen)
                 {
                     rst = n;
@@ -818,7 +818,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob026DecimalFractionLen(int n)
+        static int Prob026DecimalFractionLen(int n)
         {
             Console.Write("probing {0}, ", n);
             HashSet<int> divisorHistory = new HashSet<int>();
@@ -838,7 +838,7 @@ namespace ProjectEulerSolvers
             return counter;
         }
 
-        static int prob026DivisorTransfer(int divisor, int n)
+        static int Prob026DivisorTransfer(int divisor, int n)
         {
             while (divisor < n)
             {
@@ -847,7 +847,7 @@ namespace ProjectEulerSolvers
             return divisor;
         }
 
-        static long prob027()
+        static long Prob027()
         {
             List<int> candiPrimes = new List<int>();
             HashSet<long> primes = new HashSet<long>();
@@ -868,11 +868,11 @@ namespace ProjectEulerSolvers
                 foreach (int b in candiPrimes)
                 {
                     int n = 0;
-                    long currPrime = prob027Formula(n, a, b);
+                    long currPrime = Prob027Formula(n, a, b);
                     while (primes.Contains(Math.Abs(currPrime)) || Tools.IsPrime(Math.Abs(currPrime)))
                     {
                         n++;
-                        currPrime = prob027Formula(n, a, b);
+                        currPrime = Prob027Formula(n, a, b);
                     }
                     if (n > currPrimeAmount)
                     {
@@ -885,12 +885,12 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob027Formula(int n, int a, int b)
+        static long Prob027Formula(int n, int a, int b)
         {
             return (n * n + a * n + b);
         }
 
-        static long prob028()
+        static long Prob028()
         {
             long rst = 1;
             int n = 1;
@@ -909,7 +909,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob029Simple()
+        static long Prob029Simple()
         {
             HashSet<double> rst = new HashSet<double>();
             for (double a = 2; a <= 100; a++ )
@@ -923,7 +923,7 @@ namespace ProjectEulerSolvers
             return rst.Count;
         }
 
-        static long prob029()
+        static long Prob029()
         {
             HashSet<BigInt> rst = new HashSet<BigInt>();
             for (int a = 2; a <= 100; a++ )
@@ -931,20 +931,20 @@ namespace ProjectEulerSolvers
                 for (int b = 2; b <= 100; b++ )
                 {
                     rst.Add(BigInt.Power(a, b));
-                    outputLine(string.Format("adding: pow({0}, {1}), total: {2}", a, b, rst.Count));
+                    OutputLine(string.Format("adding: pow({0}, {1}), total: {2}", a, b, rst.Count));
                 }
             }
             return rst.Count;
         }
 
-        static long prob030()
+        static long Prob030()
         {
             int ratio = 5;
-            int ceiling = prob030FindCeiling(ratio);
+            int ceiling = Prob030FindCeiling(ratio);
             long rst = 0;
             for (int n = 2; n < ceiling; n++ )
             {
-                if (n == prob030CalcDigSum(n, ratio))
+                if (n == Prob030CalcDigSum(n, ratio))
                 {
                     rst += n;
                     Console.WriteLine("found number: {0}", n);
@@ -953,7 +953,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob030CalcDigSum(int n, int ratio)
+        static int Prob030CalcDigSum(int n, int ratio)
         {
             string nstr = n.ToString();
             int rst = 0;
@@ -964,18 +964,18 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob030FindCeiling(int ratio)
+        static int Prob030FindCeiling(int ratio)
         {
             double ninePow = Math.Pow(9, ratio);
             int n = 1;
-            while (ninePow * n > prob030FindCeilingNineNum(n))
+            while (ninePow * n > Prob030FindCeilingNineNum(n))
             {
                 n++;
             }
             return (int) ninePow * (n - 1);
         }
 
-        static int prob030FindCeilingNineNum(int n)
+        static int Prob030FindCeilingNineNum(int n)
         {
             string rst = "";
             for (int i = 0; i < n; i++ )
@@ -985,17 +985,17 @@ namespace ProjectEulerSolvers
             return Convert.ToInt32(rst);
         }
 
-        static long prob031()
+        static long Prob031()
         {
             int t = 200;
             int[] candis = { 200, 100, 50, 20, 10, 5, 2, 1 };
             Stack<int> s = new Stack<int>();
             List<int> counter = new List<int>();
-            prob031Recur(t, candis, s, counter);
+            Prob031Recur(t, candis, s, counter);
             return counter.Count;
         }
 
-        static void prob031Recur(int t, int[] candis, Stack<int> s, List<int> counter)
+        static void Prob031Recur(int t, int[] candis, Stack<int> s, List<int> counter)
         {
             foreach (int c in candis)
             {
@@ -1004,7 +1004,7 @@ namespace ProjectEulerSolvers
                     s.Push(c);
                     if (c < t)
                     {
-                        prob031Recur(t - c, candis, s, counter);
+                        Prob031Recur(t - c, candis, s, counter);
                     }
                     else
                     {
@@ -1024,7 +1024,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static long prob032()
+        static long Prob032()
         {
             long rst = 0;
             HashSet<int> s = new HashSet<int>();
@@ -1038,7 +1038,7 @@ namespace ProjectEulerSolvers
                 for (int b = 0; b < 999 && b < limit; b++)
                 {
                     int c = a * b;
-                    if (prob032IsPandigital(a, b, c, s))
+                    if (Prob032IsPandigital(a, b, c, s))
                     {
                         Console.WriteLine("found pandigitals: {0} * {1} = {2}", a, b, c);
                         rst += c;
@@ -1048,7 +1048,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static bool prob032IsPandigital(int a, int b, int c, HashSet<int> s)
+        static bool Prob032IsPandigital(int a, int b, int c, HashSet<int> s)
         {
             if (s.Contains(c))
             {
@@ -1097,7 +1097,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static long prob033()
+        static long Prob033()
         {
             int numerator = 1;
             int denominator = 1;
@@ -1113,30 +1113,30 @@ namespace ProjectEulerSolvers
                     {
                         continue;
                     }
-                    if (prob033IsCurious(a, b))
+                    if (Prob033IsCurious(a, b))
                     {
                         numerator *= a;
                         denominator *= b;
                     }
                 }
             }
-            return prob033MinFactor(numerator, denominator, denominator); 
+            return Prob033MinFactor(numerator, denominator, denominator); 
         }
 
-        static bool prob033IsCurious(int a, int b)
+        static bool Prob033IsCurious(int a, int b)
         {
-            int numerator = prob033MinFactor(a, b, a);
-            int denominator = prob033MinFactor(a, b, b);
-            List<int> commonList = prob033CommonFactorList(a, b);
+            int numerator = Prob033MinFactor(a, b, a);
+            int denominator = Prob033MinFactor(a, b, b);
+            List<int> commonList = Prob033CommonFactorList(a, b);
             if (commonList.Count == 0)
             {
                 return false;
             }
             foreach (int common in commonList)
             {
-                int sa = prob033RemoveCommonFactor(a, common), sb = prob033RemoveCommonFactor(b, common);
-                int numeratorS = prob033MinFactor(sa, sb, sa);
-                int denominatorS = prob033MinFactor(sa, sb, sb);
+                int sa = Prob033RemoveCommonFactor(a, common), sb = Prob033RemoveCommonFactor(b, common);
+                int numeratorS = Prob033MinFactor(sa, sb, sa);
+                int denominatorS = Prob033MinFactor(sa, sb, sb);
                 if (numerator == numeratorS && denominator == denominatorS)
                 {
                     Console.WriteLine("found 1 pair: {0}/{1}", a, b);
@@ -1146,7 +1146,7 @@ namespace ProjectEulerSolvers
             return false;
         }
 
-        static int prob033RemoveCommonFactor(int n, int common)
+        static int Prob033RemoveCommonFactor(int n, int common)
         {
             string nstr = n.ToString();
             string commStr = common.ToString();
@@ -1158,7 +1158,7 @@ namespace ProjectEulerSolvers
             return int.Parse(rst);
         }
 
-        static List<int> prob033CommonFactorList(int a, int b)
+        static List<int> Prob033CommonFactorList(int a, int b)
         {
             List<int> rst = new List<int>();
             string astr = a.ToString(), bstr = b.ToString();
@@ -1173,19 +1173,19 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob033MinFactor(int numerator, int demoninator, int n)
+        static int Prob033MinFactor(int numerator, int demoninator, int n)
         {
             return (int) (n / Tools.GCD(numerator, demoninator));
         }
 
-        static long prob034()
+        static long Prob034()
         {
             Dictionary<int, int> factorials = new Dictionary<int, int>();
             for (int i = 0; i <= 9; i++ )
             {
-                factorials.Add(i, (int) prob024Factorial(i));
+                factorials.Add(i, (int) Prob024Factorial(i));
             }
-            int ceil = prob034FindCeiling();
+            int ceil = Prob034FindCeiling();
             long rst = 0;
             for (int i = 10; i < ceil; i++ )
             {
@@ -1193,7 +1193,7 @@ namespace ProjectEulerSolvers
                 {
                     Console.WriteLine("work from {0} to {1}...", i, i + 10000);
                 }
-                if (i == prob034DigitSum(i, factorials))
+                if (i == Prob034DigitSum(i, factorials))
                 {
                     Console.WriteLine("found 1 curious number: {0}", i);
                     rst += i;
@@ -1202,7 +1202,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob034DigitSum(int n, Dictionary<int, int> factorials)
+        static int Prob034DigitSum(int n, Dictionary<int, int> factorials)
         {
             int rst = 0;
             char[] na = n.ToString().ToCharArray();
@@ -1213,18 +1213,18 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob034FindCeiling()
+        static int Prob034FindCeiling()
         {
-            int nineFactorial = (int) prob024Factorial(9);
+            int nineFactorial = (int) Prob024Factorial(9);
             int n = 1;
-            while (nineFactorial * n > prob030FindCeilingNineNum(n))
+            while (nineFactorial * n > Prob030FindCeilingNineNum(n))
             {
                 n++;
             }
             return (int)nineFactorial * (n - 1);
         }
 
-        static long prob035()
+        static long Prob035()
         {
             HashSet<int> primes = new HashSet<int>();
             HashSet<int> composities = new HashSet<int>();
@@ -1235,7 +1235,7 @@ namespace ProjectEulerSolvers
                 {
                     Console.WriteLine("work from {0} to {1}...", i, i + 10000);
                 }
-                if (prob035IsCirclePrime(i, primes, composities))
+                if (Prob035IsCirclePrime(i, primes, composities))
                 {
                     Console.WriteLine("found circle prime: {0}", i);
                     rst++;
@@ -1244,7 +1244,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static bool prob035IsCirclePrime(int n, HashSet<int> primes, HashSet<int> composities)
+        static bool Prob035IsCirclePrime(int n, HashSet<int> primes, HashSet<int> composities)
         {
             string nstr = n.ToString();
             for (int i = 0; i < nstr.Length; i++ )
@@ -1271,7 +1271,7 @@ namespace ProjectEulerSolvers
             return true;
         }
 
-        static long prob036()
+        static long Prob036()
         {
             Console.WriteLine(Convert.ToString(7, 2));
             long rst = 0;
@@ -1281,7 +1281,7 @@ namespace ProjectEulerSolvers
                 {
                     Console.WriteLine("work from {0} to {1}...", i, i + 10000);
                 }
-                if (prob036IsPalindromic(i.ToString()) && prob036IsPalindromic(Convert.ToString(i, 2)))
+                if (Prob036IsPalindromic(i.ToString()) && Prob036IsPalindromic(Convert.ToString(i, 2)))
                 {
                     Console.WriteLine("found 1 double palindromic number: {0} ({1})", i, Convert.ToString(i, 2));
                     rst += i;
@@ -1290,7 +1290,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static bool prob036IsPalindromic(string s)
+        static bool Prob036IsPalindromic(string s)
         {
             for (int i = 0; i < s.Length / 2 + 1; i++ )
             {
@@ -1302,7 +1302,7 @@ namespace ProjectEulerSolvers
             return true;
         }
 
-        static long prob037()
+        static long Prob037()
         {
             long rst = 0;
             int counter = 0;
@@ -1310,7 +1310,7 @@ namespace ProjectEulerSolvers
             HashSet<long> primes = new HashSet<long>();
             while (counter < 11)
             {
-                if (prob037IsTruncatablePrime(n, primes))
+                if (Prob037IsTruncatablePrime(n, primes))
                 {
                     Console.WriteLine("found 1 truncatable prime: {0}", n);
                     counter++;
@@ -1321,7 +1321,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static bool prob037IsTruncatablePrime(long n, HashSet<long> primes)
+        static bool Prob037IsTruncatablePrime(long n, HashSet<long> primes)
         {
             string nstr = n.ToString();
             for (int i = 0; i < nstr.Length; i++ )
@@ -1354,19 +1354,19 @@ namespace ProjectEulerSolvers
             return true;
         }
 
-        static long prob038()
+        static long Prob038()
         {
             return 0;
         }
 
-        static long prob039()
+        static long Prob039()
         {
             long rst = 0;
             int ceil = 1000;
             int curr = 0;
             for (int n = 12; n <= ceil; n++ )
             {
-                int trianglesN = prob039ProbTriangle(n);
+                int trianglesN = Prob039ProbTriangle(n);
                 if ( trianglesN > curr)
                 {
                     curr = trianglesN;
@@ -1376,7 +1376,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int prob039ProbTriangle(int n)
+        static int Prob039ProbTriangle(int n)
         {
             int triangleCount = 0;
             Console.Write("Probing {0}: ", n);
@@ -1396,7 +1396,7 @@ namespace ProjectEulerSolvers
             return triangleCount;
         }
 
-        static long prob040()
+        static long Prob040()
         {
             StringBuilder s = new StringBuilder("");
             int counter = 1;
@@ -1419,14 +1419,14 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob041()
+        static long Prob041()
         {
             /************************************************************************/
             /* 9、8位的pandigital都可以被3整除，所以从7位开始（7654321）            */
             /************************************************************************/
             for (long n = 7654319; n > 1; n -- )
             {
-                if (prob041IsPanDigital(n) && Tools.IsPrime(n))
+                if (Prob041IsPanDigital(n) && Tools.IsPrime(n))
                 {
                     return n;
                 }
@@ -1434,7 +1434,7 @@ namespace ProjectEulerSolvers
             return 0;
         }
 
-        static bool prob041IsPanDigital(long n)
+        static bool Prob041IsPanDigital(long n)
         {
             HashSet<char> rst = new HashSet<char>();
             string s = n.ToString();
@@ -1449,17 +1449,17 @@ namespace ProjectEulerSolvers
             return rst.Count == s.Length;
         }
 
-        static long prob042()
+        static long Prob042()
         {
             long rst = 0;
-            HashSet<int> triangleNums = prob042InitTriangleNums(100);
-            StreamReader r = new StreamReader("prob042_words.txt");
+            HashSet<int> triangleNums = Prob042InitTriangleNums(100);
+            StreamReader r = new StreamReader("Prob042_words.txt");
             string line = r.ReadLine();
             line = line.Replace("\"", "");
             string[] a = line.Split(',');
             foreach (string word in a)
             {
-                if (prob042IsTriangleWord(word, triangleNums))
+                if (Prob042IsTriangleWord(word, triangleNums))
                 {
                     rst++;
                 }
@@ -1467,7 +1467,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static bool prob042IsTriangleWord(string word, HashSet<int> triangleNums)
+        static bool Prob042IsTriangleWord(string word, HashSet<int> triangleNums)
         {
             int count = 0;
             foreach (char c in word)
@@ -1485,7 +1485,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static HashSet<int> prob042InitTriangleNums(int ceil)
+        static HashSet<int> Prob042InitTriangleNums(int ceil)
         {
             HashSet<int> rst = new HashSet<int>();
             for (int i = 1; i <= ceil; i++ )
@@ -1495,11 +1495,11 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob043()
+        static long Prob043()
         {
             int[] factors = new int[] { 17, 13, 11, 7, 5, 3, 2 };
             HashSet<string> results = new HashSet<string>();
-            prob043Recur(0, factors, new StringBuilder(""), results);
+            Prob043Recur(0, factors, new StringBuilder(""), results);
             long rst = 0;
             foreach (string s in results)
             {
@@ -1508,11 +1508,11 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static void prob043Recur(int n, int[] factors, StringBuilder builder, HashSet<string> results)
+        static void Prob043Recur(int n, int[] factors, StringBuilder builder, HashSet<string> results)
         {
             if (n >= factors.Length)
             {
-                string pandigital = prob043ToPandigital(builder.ToString());
+                string pandigital = Prob043ToPandigital(builder.ToString());
                 if (!pandigital.Equals(""))
                 {
                     results.Add(pandigital);
@@ -1528,13 +1528,13 @@ namespace ProjectEulerSolvers
                 if (n == 0)
                 {
                     builder.Append(currStr);
-                    prob043Recur(n + 1, factors, builder, results);
+                    Prob043Recur(n + 1, factors, builder, results);
                 }
-                else if (prob043Connectable(builder, currStr))
+                else if (Prob043Connectable(builder, currStr))
                 {
                     builder.Insert(0, currStr[0]);
                     connectable = true;
-                    prob043Recur(n + 1, factors, builder, results);
+                    Prob043Recur(n + 1, factors, builder, results);
                 }
 
                 if (n == 0)
@@ -1549,7 +1549,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static string prob043ToPandigital(string s)
+        static string Prob043ToPandigital(string s)
         {
             HashSet<char> container = new HashSet<char>();
             foreach (char c in s)
@@ -1574,12 +1574,12 @@ namespace ProjectEulerSolvers
             return "";
         }
 
-        static bool prob043Connectable(StringBuilder builder, string curr)
+        static bool Prob043Connectable(StringBuilder builder, string curr)
         {
             return curr[2] == builder[1] && curr[1] == builder[0];
         }
 
-        static long prob044()
+        static long Prob044()
         {
             int size = 3000;
             List<long> pentagonalList = new List<long>(size);
@@ -1614,7 +1614,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob045()
+        static long Prob045()
         {
             long n = 286;
             while (true)
@@ -1624,7 +1624,7 @@ namespace ProjectEulerSolvers
                     Console.WriteLine("work from {0} to {1}...", n, n + 100);
                 }
                 long t = n * (n + 1) / 2;
-                if (prob045IsPentagonal(t) && prob045IsHexagonal(t))
+                if (Prob045IsPentagonal(t) && Prob045IsHexagonal(t))
                 {
                     return t;
                 }
@@ -1632,24 +1632,24 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static bool prob045IsPentagonal(long t)
+        static bool Prob045IsPentagonal(long t)
         {
             double n = (1 + Math.Sqrt(24 * t + 1)) / 6;
-            return prob045IsInteger(n);
+            return Prob045IsInteger(n);
         }
 
-        static bool prob045IsHexagonal(long t)
+        static bool Prob045IsHexagonal(long t)
         {
             double n = (1 + Math.Sqrt(t * 8 + 1)) / 4;
-            return prob045IsInteger(n);
+            return Prob045IsInteger(n);
         }
 
-        static bool prob045IsInteger(double d)
+        static bool Prob045IsInteger(double d)
         {
             return d % 1 < 0.0000001;
         }
 
-        static long prob046()
+        static long Prob046()
         {
             List<long> primes = new List<long>();
             primes.Add(2);
@@ -1658,7 +1658,7 @@ namespace ProjectEulerSolvers
             {
                 if (!Tools.IsPrime(n))
                 {
-                    if (!prob046Decomposeable(n, primes))
+                    if (!Prob046Decomposeable(n, primes))
                     {
                         return n;
                     }
@@ -1671,12 +1671,12 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static bool prob046Decomposeable(long prime, List<long> primes)
+        static bool Prob046Decomposeable(long prime, List<long> primes)
         {
             foreach (long p in primes)
             {
                 double num = Math.Sqrt((prime - p) / 2);
-                if (num > 0 && prob045IsInteger(num))
+                if (num > 0 && Prob045IsInteger(num))
                 {
                     Console.WriteLine("{0} is made up by: {1} + 2 * {2} * {2}", prime, p, (int) num);
                     return true;
@@ -1685,7 +1685,7 @@ namespace ProjectEulerSolvers
             return false;
         }
 
-        static long prob047()
+        static long Prob047()
         {
             List<long> candidates = new List<long>();
             long n = 2;
@@ -1699,7 +1699,7 @@ namespace ProjectEulerSolvers
                 {
                     return candidates[0];
                 }
-                if (prob047CouldDecomposeTo4Primes(n))
+                if (Prob047CouldDecomposeTo4Primes(n))
                 {
                     candidates.Add(n);
                 }
@@ -1711,7 +1711,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static bool prob047CouldDecomposeTo4Primes(long number)
+        static bool Prob047CouldDecomposeTo4Primes(long number)
         {
             HashSet<long> factors = new HashSet<long>();
             int divisor = 2;
@@ -1728,17 +1728,17 @@ namespace ProjectEulerSolvers
             return factors.Count == 4;
         }
 
-        static long prob048()
+        static long Prob048()
         {
             return 0;
         }
 
-        static long prob049()
+        static long Prob049()
         {
             return long.MaxValue;
         }
 
-        static long prob050()
+        static long Prob050()
         {
             List<long> primes = new List<long>(80000);
             for (long n = 2; n <= 1000000; n++ )
@@ -1782,7 +1782,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob050A()
+        static long Prob050A()
         {
             List<long> primes = new List<long>(80000);
             HashSet<long> primeSet = new HashSet<long>();
@@ -1822,7 +1822,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob051()
+        static long Prob051()
         {
             long begin = DateTime.Now.Ticks;
             long n = 11;
@@ -1830,7 +1830,7 @@ namespace ProjectEulerSolvers
             HashSet<long> primes = new HashSet<long>();
             while (true)
             {
-                if (!prob051IsPrime(n, primes))
+                if (!Prob051IsPrime(n, primes))
                 {
                     n++;
                     continue;
@@ -1840,10 +1840,10 @@ namespace ProjectEulerSolvers
                 for (int i = 1; i <= len - 1; i++ )
                 {
                     List<int[]> combinations = new List<int[]>();
-                    prob051Combination(len, i, 0, combinations, null);
+                    Prob051Combination(len, i, 0, combinations, null);
                     foreach (int[] substitues in combinations)
                     {
-                        if (prob051IsThatPrime(n, substitues, threshold, primes))
+                        if (Prob051IsThatPrime(n, substitues, threshold, primes))
                         {
                             long end = DateTime.Now.Ticks;
                             Console.WriteLine("Time elapsed: {0}ms", (end - begin) / 10000);
@@ -1855,7 +1855,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static bool prob051IsThatPrime(long prime, int[] substitues, int threshold, HashSet<long> primes)
+        static bool Prob051IsThatPrime(long prime, int[] substitues, int threshold, HashSet<long> primes)
         {
             char[] ca = prime.ToString().ToCharArray();
             char tmp = ca[substitues[0]];
@@ -1877,7 +1877,7 @@ namespace ProjectEulerSolvers
                 {
                     continue;
                 }
-                if (prob051IsPrime(long.Parse(new string(ca)), primes))
+                if (Prob051IsPrime(long.Parse(new string(ca)), primes))
                 {
                     counter++;
                 }
@@ -1885,7 +1885,7 @@ namespace ProjectEulerSolvers
             return counter >= threshold;
         }
 
-        static bool prob051IsPrime(long n, HashSet<long> primes)
+        static bool Prob051IsPrime(long n, HashSet<long> primes)
         {
             if (primes.Contains(n))
             {
@@ -1902,7 +1902,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static void prob051Combination(int m, int n, int p, List<int[]> rst, List<int> inter)
+        static void Prob051Combination(int m, int n, int p, List<int[]> rst, List<int> inter)
         {
             if (null == inter)
             {
@@ -1923,13 +1923,13 @@ namespace ProjectEulerSolvers
                 if (!inter.Contains(i))
                 {
                     inter.Add(i);
-                    prob051Combination(m, n, i + 1, rst, inter);
+                    Prob051Combination(m, n, i + 1, rst, inter);
                     inter.Remove(i);
                 }
             }
         }
 
-        static long prob052()
+        static long Prob052()
         {
             long begin = DateTime.Now.Ticks;
             long step = 10;
@@ -1941,7 +1941,7 @@ namespace ProjectEulerSolvers
                 //Console.WriteLine("working from {0} to {1}...", step, currLimit);
                 for (long n = step; n <= currLimit; n++)
                 {
-                    if (prob052IsThatNumber(n))
+                    if (Prob052IsThatNumber(n))
                     {
                         long end = DateTime.Now.Ticks;
                         Console.WriteLine("Time elapsed: {0}ms", (end - begin) / 10000);
@@ -1952,7 +1952,7 @@ namespace ProjectEulerSolvers
             }
         }
 
-        static bool prob052IsThatNumber(long n)
+        static bool Prob052IsThatNumber(long n)
         {
             HashSet<char> container = new HashSet<char>(), worker = new HashSet<char>();
             List<char> standard = n.ToString().ToCharArray().ToList();
@@ -1976,7 +1976,7 @@ namespace ProjectEulerSolvers
             return true;
         }
 
-        static long prob053()
+        static long Prob053()
         {
             long begin = DateTime.Now.Ticks;
             long rst = 0;
@@ -1984,7 +1984,7 @@ namespace ProjectEulerSolvers
             {
                 for (int r = 1; r < n; r++ )
                 {
-                    if (prob053Factorial(n) / prob053Factorial(r) / prob053Factorial(n - r) >= 1000000)
+                    if (Prob053Factorial(n) / Prob053Factorial(r) / Prob053Factorial(n - r) >= 1000000)
                     {
                         rst++;
                     }
@@ -1995,19 +1995,19 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static double prob053Factorial(double n)
+        static double Prob053Factorial(double n)
         {
             if (n == 1)
             {
                 return 1;
             }
-            return n * prob053Factorial(n - 1);
+            return n * Prob053Factorial(n - 1);
         }
 
-        static long prob054()
+        static long Prob054()
         {
             long rst = 0;
-            StreamReader r = new StreamReader("prob054_poker.txt");
+            StreamReader r = new StreamReader("Prob054_poker.txt");
             string line = r.ReadLine();
             while (line != null)
             {
@@ -2017,13 +2017,13 @@ namespace ProjectEulerSolvers
                 Prob054PorkerSuite ps2 = new Prob054PorkerSuite(porkes2);
                 int comp = ps1.CompareTo(ps2);
                 if (comp > 0) rst++;
-                if (comp == 0) outputLine(string.Format("p1:{0} -- p2:{1} = {2}", ps1.Resolver, ps2.Resolver, comp));
+                if (comp == 0) OutputLine(string.Format("p1:{0} -- p2:{1} = {2}", ps1.Resolver, ps2.Resolver, comp));
                 line = r.ReadLine();
             }
             return rst;
         }
 
-        static long prob055()
+        static long Prob055()
         {
             long rst = 0;
             for (int i = 1; i < 10000; i++ )
@@ -2032,7 +2032,7 @@ namespace ProjectEulerSolvers
                 int counter = 0;
                 while (counter < 50)
                 {
-                    num += prob055ReverseString(num);
+                    num += Prob055ReverseString(num);
                     if (Tools.IsPalindromic(num))
                     {
                         break;
@@ -2045,14 +2045,14 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static BigInt prob055ReverseString(BigInt n)
+        static BigInt Prob055ReverseString(BigInt n)
         {
             char[] ca = n.ToString().ToCharArray();
             Array.Reverse(ca);
             return new BigInt(new string(ca));
         }
 
-        static long prob056()
+        static long Prob056()
         {
             long rst = 0;
             for (int i = 1; i < 100; i++)
@@ -2060,18 +2060,18 @@ namespace ProjectEulerSolvers
                 for (int j = 1; j < 100; j++)
                 {
                     BigInt n = BigInt.Power(i, j);
-                    long snd = prob056SumNumberDigital(n.ToString());
+                    long snd = Prob056SumNumberDigital(n.ToString());
                     if (snd > rst)
                     {
                         rst = snd;
-                        outputLine(string.Format("current top is {0}(for {1} composited by {2}pow{3})", rst, n, i, j));
+                        OutputLine(string.Format("current top is {0}(for {1} composited by {2}pow{3})", rst, n, i, j));
                     }
                 }
             }
             return rst;
         }
 
-        static long prob056SumNumberDigital(string n)
+        static long Prob056SumNumberDigital(string n)
         {
             long rst = 0;
             char[] ca = n.ToCharArray();
@@ -2082,7 +2082,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob057()
+        static long Prob057()
         {
             long rst = 0;
             Fraction suffix = new Fraction(1, 2), ONE = new Fraction(1, 1), TWO = new Fraction(2, 1);
@@ -2093,7 +2093,7 @@ namespace ProjectEulerSolvers
                 if (sqrt2.Numerator.ToString().Length > sqrt2.Denominator.ToString().Length)
                 {
                     rst++;
-                    outputLine(string.Format("{0}th,{1}", counter + 1, sqrt2.ToString()));
+                    OutputLine(string.Format("{0}th,{1}", counter + 1, sqrt2.ToString()));
                 }
                 counter++;
                 suffix = ONE / (TWO + suffix);
@@ -2101,7 +2101,7 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob058()
+        static long Prob058()
         {
             long rst = 1;
             long node4 = 1, node3, node2, node1;
@@ -2122,38 +2122,38 @@ namespace ProjectEulerSolvers
                 numerator += Tools.IsPrime(node4) ? 1 : 0;
                 double ratio = numerator / denominator;
                 watch.Stop();
-                outputLine(string.Format("size: {0}, ratio: {1:N6}", rst, ratio));
+                OutputLine(string.Format("size: {0}, ratio: {1:N6}", rst, ratio));
                 watch.Start();
                 if (0.1 > ratio) break;
             }
             return rst;
         }
 
-        static long prob059()
+        static long Prob059()
         {
             watch.Stop();
-            byte[] cipher = prob059ReadCipher(), plain = new byte[cipher.Length];
+            byte[] cipher = Prob059ReadCipher(), plain = new byte[cipher.Length];
             long rst = 0;
             watch.Start();
-            List<byte[]> candiKeyList = prob059GenerateCandiKey();
+            List<byte[]> candiKeyList = Prob059GenerateCandiKey();
             foreach (byte[] key in candiKeyList)
             {
-                if (!prob059Decrypt(cipher, plain, key)) continue;
+                if (!Prob059Decrypt(cipher, plain, key)) continue;
                 foreach (byte b in plain) rst += b;
-                outputLine(string.Format("Key: {0}\nContent:\n{1}", Encoding.ASCII.GetString(key), Encoding.ASCII.GetString(plain)));
+                OutputLine(string.Format("Key: {0}\nContent:\n{1}", Encoding.ASCII.GetString(key), Encoding.ASCII.GetString(plain)));
                 break;
             }
             return rst;
         }
 
-        static bool prob059Decrypt(byte[] cipher, byte[] plain, byte[] key)
+        static bool Prob059Decrypt(byte[] cipher, byte[] plain, byte[] key)
         {
             for (int i = 0; i < cipher.Length; )
             {
                 for (int j = 0; j < key.Length && i < cipher.Length; j++ )
                 {
                     byte b = (byte) (cipher[i] ^ key[j]);
-                    if (prob059IsInvalidChar(b)) return false;
+                    if (Prob059IsInvalidChar(b)) return false;
                     plain[i] = b;
                     i++;
                 }
@@ -2161,14 +2161,14 @@ namespace ProjectEulerSolvers
             return true;
         }
 
-        static bool prob059IsInvalidChar(byte b)
+        static bool Prob059IsInvalidChar(byte b)
         {
             return 26 > b || 126 < b || '%' == b || '}' == b || '+' == b || '/' == b || '{' == b;
         }
 
-        static byte[] prob059ReadCipher()
+        static byte[] Prob059ReadCipher()
         {
-            StreamReader r = new StreamReader("prob059_cipher1.txt");
+            StreamReader r = new StreamReader("Prob059_cipher1.txt");
             string line = r.ReadLine();
             string[] cipherStrArray = line.Split(',');
             byte[] cipher = new byte[cipherStrArray.Length];
@@ -2179,7 +2179,7 @@ namespace ProjectEulerSolvers
             return cipher;
         }
 
-        static List<byte[]> prob059GenerateCandiKey()
+        static List<byte[]> Prob059GenerateCandiKey()
         {
             List<byte[]> rst = new List<byte[]>(26 * 26 * 26);
             for (char i = 'a'; i <= 'z'; i++ ) { for (char j = 'a'; j <= 'z'; j++) { for (char k = 'a'; k <= 'z'; k++)
@@ -2189,42 +2189,42 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob060()
+        static long Prob060()
         {
             long rst = long.MaxValue;
             int limit = 1051;
             HashSet<long> cache = new HashSet<long>();
-            List<long> candidates = prob060Candidates(limit, cache);
+            List<long> candidates = Prob060Candidates(limit, cache);
             int counter = 0;
             foreach (long c1 in candidates)
             {
-                outputLine(string.Format("working for {0}", ++counter));
+                OutputLine(string.Format("working for {0}", ++counter));
                 foreach (long c2 in candidates)
                 {
                     if (c1 >= c2) continue;
-                    if (!prob060Check(c1, c2, cache)) continue;
+                    if (!Prob060Check(c1, c2, cache)) continue;
                     foreach (long c3 in candidates)
                     {
                         if (c2 >= c3) continue;
-                        if (!prob060Check(c1, c3, cache)
-                            || !prob060Check(c2, c3, cache)
+                        if (!Prob060Check(c1, c3, cache)
+                            || !Prob060Check(c2, c3, cache)
                             ) continue;
                         foreach (long c4 in candidates)
                         {
                             if (c3 >= c4) continue;
-                            if (!prob060Check(c1, c4, cache)
-                                || !prob060Check(c2, c4, cache)
-                                || !prob060Check(c3, c4, cache)
+                            if (!Prob060Check(c1, c4, cache)
+                                || !Prob060Check(c2, c4, cache)
+                                || !Prob060Check(c3, c4, cache)
                                 ) continue;
                             foreach (long c5 in candidates)
                             {
                                 if (c4 >= c5) continue;
-                                if (!prob060Check(c1, c5, cache)
-                                    || !prob060Check(c2, c5, cache)
-                                    || !prob060Check(c3, c5, cache)
-                                    || !prob060Check(c4, c5, cache)
+                                if (!Prob060Check(c1, c5, cache)
+                                    || !Prob060Check(c2, c5, cache)
+                                    || !Prob060Check(c3, c5, cache)
+                                    || !Prob060Check(c4, c5, cache)
                                     ) continue;
-                                outputLine(string.Format("found primes: {0}, {1}, {2}, {3}, {4}", c1, c2, c3, c4, c5));
+                                OutputLine(string.Format("found primes: {0}, {1}, {2}, {3}, {4}", c1, c2, c3, c4, c5));
                                 long tmp = c1 + c2 + c3 + c4 + c5;
                                 rst = tmp < rst ? tmp : rst;
                             }
@@ -2235,15 +2235,15 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static bool prob060Check(long c1, long c2, HashSet<long> cache)
+        static bool Prob060Check(long c1, long c2, HashSet<long> cache)
         {
-            return prob051IsPrime(prob060Concate(c1, c2), cache) 
-                && prob051IsPrime(prob060Concate(c2, c1), cache); 
+            return Prob051IsPrime(Prob060Concate(c1, c2), cache) 
+                && Prob051IsPrime(Prob060Concate(c2, c1), cache); 
         }
 
-        static long prob060Concate(long c1, long c2) { return long.Parse(c1.ToString() + c2.ToString()); }
+        static long Prob060Concate(long c1, long c2) { return long.Parse(c1.ToString() + c2.ToString()); }
 
-        static List<long> prob060Candidates(int limit, HashSet<long> cache)
+        static List<long> Prob060Candidates(int limit, HashSet<long> cache)
         {
             List<long> rst = new List<long>(limit);
             int counter = 0;
@@ -2251,7 +2251,7 @@ namespace ProjectEulerSolvers
             while (limit > counter)
             {
                 n++;
-                if (prob051IsPrime(n, cache))
+                if (Prob051IsPrime(n, cache))
                 {
                     rst.Add(n);
                     counter++;
@@ -2260,32 +2260,73 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static long prob061()
+        static long Prob061()
         {
-            List<long> triangles = prob061PolygonList(new polygonN(Tools.TriangleN)),
-                squares = prob061PolygonList(new polygonN(Tools.SquareN)),
-                pentagonals = prob061PolygonList(new polygonN(Tools.PentagonalN)),
-                hexagonals = prob061PolygonList(new polygonN(Tools.HexagonalN)),
-                heptagonals = prob061PolygonList(new polygonN(Tools.HeptagonalN)),
-                octagonals = prob061PolygonList(new polygonN(Tools.OctagonalN));
-            outputLine("{0},{1},{2},{3},{4},{5}", triangles.Count, squares.Count, pentagonals.Count, hexagonals.Count, heptagonals.Count, octagonals.Count);
-            int counter = 0;
-            foreach (long triangle in triangles)
+            OutputLine("input size: 1 - 6");
+            int size = int.Parse(Console.ReadLine());
+            watch.Reset(); watch.Start();
+            Stack<long> rstStack = new Stack<long>();
+            Stack<char> seriesStack = new Stack<char>();
+            Dictionary<long, List<KeyValuePair<long, char>>> dict = new Dictionary<long, List<KeyValuePair<long, char>>>();
+            List<long> triangles = Prob061PolygonList(new PolygonN(Tools.TriangleN));
+            Prob061InitCandiMap(dict, Prob061PolygonList(new PolygonN(Tools.SquareN)), '4');
+            Prob061InitCandiMap(dict, Prob061PolygonList(new PolygonN(Tools.PentagonalN)), '5');
+            Prob061InitCandiMap(dict, Prob061PolygonList(new PolygonN(Tools.HexagonalN)), '6');
+            Prob061InitCandiMap(dict, Prob061PolygonList(new PolygonN(Tools.HeptagonalN)), '7');
+            Prob061InitCandiMap(dict, Prob061PolygonList(new PolygonN(Tools.OctagonalN)), '8');
+
+            foreach (long n in triangles)
             {
-                outputLine(triangle); foreach (long square in squares) { foreach (long pentagonal in pentagonals) { foreach (long hexagonal in heptagonals) { foreach (long heptagonal in heptagonals) { foreach (long octagonal in octagonals) {
-                        counter++;
-            }}}}}}
-            outputLine(counter);
+                rstStack.Push(n);
+                OutputLine("working on: {0}", n);
+                if (Prob061Recur(dict, rstStack, seriesStack, size, Prob061Prefix(n))) break;
+                rstStack.Pop();
+            }
             long rst = 0;
+            foreach (long n in rstStack) OutputLine(n);
+            foreach (long n in rstStack) rst += n;
             return rst;
         }
 
-        static bool prob061IsCyclic(long[] nums)
+        static bool Prob061Recur(Dictionary<long, List<KeyValuePair<long, char>>> dict, Stack<long> rstStack, Stack<char> seriesStack, int size, long prefix)
         {
+            if (size == rstStack.Count && Prob061Suffix(rstStack.Peek()) == prefix) return true;
+            long key = Prob061Suffix(rstStack.Peek());
+            if (!dict.ContainsKey(key)) return false;
+            foreach (KeyValuePair<long, char> pair in dict[key])
+            {
+                if (seriesStack.Contains(pair.Value)) continue;
+                rstStack.Push(pair.Key);
+                seriesStack.Push(pair.Value);
+                if (Prob061Recur(dict, rstStack, seriesStack, size, prefix)) return true;
+                seriesStack.Pop();
+                rstStack.Pop();
+            }
             return false;
         }
 
-        static List<long> prob061PolygonList(polygonN algorithm)
+        static void Prob061InitCandiMap(Dictionary<long, List<KeyValuePair<long, char>>> dict, List<long> nums, char type)
+        {
+            foreach (long n in nums) Prob061PrepareCandiList(dict, Prob061Prefix(n)).Add(new KeyValuePair<long, char>(n, type));
+        }
+
+        static long Prob061Prefix(long n)
+        {
+            return (n - Prob061Suffix(n)) / 100;
+        }
+
+        static long Prob061Suffix(long n)
+        {
+            return n % 100;
+        }
+
+        static List<KeyValuePair<long, char>> Prob061PrepareCandiList(Dictionary<long, List<KeyValuePair<long, char>>> dict, long key)
+        {
+            if (!dict.ContainsKey(key)) dict.Add(key, new List<KeyValuePair<long, char>>());
+            return dict[key];
+        }
+
+        static List<long> Prob061PolygonList(PolygonN algorithm)
         {
             List<long> rst = new List<long>();
             for (long n = 1; ; n++ )
@@ -2293,7 +2334,18 @@ namespace ProjectEulerSolvers
                 long pn = algorithm(n);
                 if (1000 > pn) continue;
                 if (9999 < pn) break;
+                if ('0' == pn.ToString()[2]) continue;
                 rst.Add(pn);
+            }
+            return rst;
+        }
+
+        static long Prob062()
+        {
+            long rst = 0;
+            Permutater<char[], char> p = new Permutater<char[], char>();
+            foreach (char[] ca in p)
+            {
             }
             return rst;
         }

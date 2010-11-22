@@ -24,7 +24,7 @@ namespace ProjectEulerSolvers
 
         public Fraction(BigInt num, BigInt deno)
         {
-            BigInt gcd = Tools.GCD(num, deno);
+            BigInt gcd = BigInt.Gcd(num, deno);
             _num = num / gcd;
             _deno = deno / gcd;
         }
@@ -55,7 +55,7 @@ namespace ProjectEulerSolvers
 
         public override string ToString()
         {
-            return _num % _deno == 0 ? string.Format("{0}", _num / _deno) : string.Format("{0}/{1}", _num, _deno);
+            return _num % _deno == 0 ? string.Format("{0}", _num / _deno) : string.Format("{0} / {1}", _num, _deno);
         }
     }
 }
