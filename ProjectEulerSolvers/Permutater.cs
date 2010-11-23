@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProjectEulerSolvers
 {
-    class Permutater<T, K> : IEnumerable<T>, IEnumerator<T> where T : IEnumerable<K>
+    class Permutater<T, K> : IEnumerable<T>, IEnumerator<T> where T : IList<K>
     {
         private T a;
 
@@ -14,6 +14,7 @@ namespace ProjectEulerSolvers
 
         public void Dispose()
         {
+            K k = a[0];
             throw new NotImplementedException();
         }
 
