@@ -21,12 +21,15 @@ namespace ProjectEulerSolvers
 
         static void OutputLine(string format, params object[] arg) { OutputLine(string.Format(format, arg)); }
         static void OutputLine(object o) { OutputLine(o.ToString()); }
+        static void OutputLine() { OutputLine(""); }
         static void OutputLine(string s) { watch.Stop(); Console.WriteLine(s); watch.Start(); }
+        static void Output(string format, params object[] arg) { Output(string.Format(format, arg)); }
+        static void Output(object o) { Output(o.ToString()); }
         static void Output(string s) { watch.Stop(); Console.Write(s); watch.Start(); }
 
         static void Main(string[] args)
         {
-            Executor e = new Executor(Prob062);
+            Executor e = new Executor(Prob063);
             watch.Start();
             long rst = e();
             watch.Stop();
@@ -2342,13 +2345,57 @@ namespace ProjectEulerSolvers
 
         static long Prob062()
         {
-            long rst = 0;
-            Permutater<char[], char> p = new Permutater<char[], char>();
-            foreach (char[] ca in p)
+            Dictionary<string, List<long>> cubes = new Dictionary<string, List<long>>();
+            string key = "";
+            long l = 0;
+            for (long n = 1; n <= 100000; n++ )
             {
+                long cube = n * n * n;
+                List<char> nList = cube.ToString().ToCharArray().ToList<char>();
+                nList.Sort();
+                key = new string(nList.ToArray<char>());
+                List<long> tail;
+                if (cubes.ContainsKey(key))
+                {
+                    tail = cubes[key];
+                    string exists = "";
+                    foreach (long t in tail) exists += string.Format("{0},", t);
+                    OutputLine("working on {0} made up by {1}, exists: {2}", cube, n, exists.Substring(0, exists.Length - 1));
+                } 
+                else
+                {
+                    tail = new List<long>();
+                    cubes.Add(key, tail);
+                }
+                tail.Add(n);
+                if (5 <= tail.Count)
+                {
+                    l = tail[0];
+                    break;
+                }
+            }
+            return l * l * l;
+        }
+
+        static long Prob063()
+        {
+            long rst = 0;
+            for (int exp = 1; ; exp++ )
+            {
+                int counter = 0;
+                for (int x = 1; x < 10; x++ )
+                {
+                    BigInt pow = BigInt.Power(x, exp);
+                    if (exp != pow.ToString().Length) continue;
+                    counter++;
+                    OutputLine("pow({0},{1})={2}", x, exp, pow);
+                }
+                if (0 == counter) break;
+                rst += counter;
             }
             return rst;
         }
+        
     }
 
 }
