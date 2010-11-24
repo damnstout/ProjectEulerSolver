@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 
 using Emil.GMP;
+using System.Reflection;
 
 namespace ProjectEulerSolvers
 {
@@ -22,19 +23,58 @@ namespace ProjectEulerSolvers
         static void OutputLine(string format, params object[] arg) { OutputLine(string.Format(format, arg)); }
         static void OutputLine(object o) { OutputLine(o.ToString()); }
         static void OutputLine() { OutputLine(""); }
-        static void OutputLine(string s) { watch.Stop(); Console.WriteLine(s); watch.Start(); }
+        static void OutputLine(string s)
+        {
+#if DEBUG
+            watch.Stop(); 
+            Console.WriteLine(s); 
+            watch.Start(); 
+#endif
+        }
         static void Output(string format, params object[] arg) { Output(string.Format(format, arg)); }
         static void Output(object o) { Output(o.ToString()); }
-        static void Output(string s) { watch.Stop(); Console.Write(s); watch.Start(); }
+        static void Output(string s) 
+        {
+#if DEBUG
+            watch.Stop(); 
+            Console.Write(s); 
+            watch.Start();
+#endif
+        }
 
         static void Main(string[] args)
         {
-            Executor e = new Executor(Prob063);
+            Executor e = GetRunner();
+            if (null == e) return;
             watch.Start();
             long rst = e();
             watch.Stop();
-            Console.WriteLine("anwser of {1} is: {0:D}", rst, e.Method.Name);
-            Console.WriteLine("time cost is: {0}ms", watch.ElapsedMilliseconds);
+            Console.WriteLine("Answer of {1} is: {0:D}", rst, e.Method.Name);
+            Console.WriteLine("Time cost is: {0}ms", watch.ElapsedMilliseconds);
+        }
+
+        static Executor GetRunner()
+        {
+            BindingFlags flag = BindingFlags.Static | BindingFlags.NonPublic;
+            Type thisType = typeof(Program);
+            MethodInfo defaultMethod = thisType.GetMethods(flag)
+                .Where(x => x.Name.StartsWith("Prob") && x.Name.Length == 7)
+                .OrderBy(x => x.Name)
+                .Last();
+            Console.Write("Which problem to run({0}) ? ", defaultMethod.Name.Substring(4));
+            MethodInfo userMethod = null;
+            try 
+            {
+                string input = Console.ReadLine();
+                if (!string.IsNullOrEmpty(input)) userMethod = thisType.GetMethod(string.Format("Prob{0:D3}", int.Parse(input)), flag);
+                if (!string.IsNullOrEmpty(input) && null == userMethod) { Console.WriteLine("Method not found"); return null; } 
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            };
+            return (Executor) Delegate.CreateDelegate(typeof(Executor), null == userMethod ? defaultMethod : userMethod);
         }
 
         static long Prob001()
@@ -2087,8 +2127,9 @@ namespace ProjectEulerSolvers
 
         static long Prob057()
         {
+            IrrationalNumber sqrtTwo = new IrrationalNumber(1, new SqrtExpandSequence((new int[] {2}).ToList()));
             long rst = 0;
-            Fraction suffix = new Fraction(1, 2), ONE = new Fraction(1, 1), TWO = new Fraction(2, 1);
+            Fraction suffix = new Fraction(1, 2), ONE = Fraction.ONE, TWO = Fraction.Integer(2);
             int counter = 0;
             while (counter < 1000)
             {
@@ -2393,6 +2434,16 @@ namespace ProjectEulerSolvers
                 if (0 == counter) break;
                 rst += counter;
             }
+            return rst;
+        }
+
+        static long Prob064()
+        {
+            long rst = 0;
+            IrrationalNumber n = new IrrationalNumber(2, new SqrtExpandSequence((new int[] { 4 }).ToList<int>()));
+            int level = 50;
+            Fraction f = n.ToFraction(level);
+            OutputLine("expand 3 to level {2}: {0} := {1}", f, f.Value, level);
             return rst;
         }
         
