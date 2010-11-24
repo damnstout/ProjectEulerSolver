@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 
 using Emil.GMP;
+using Oyster.Math;
 
 namespace ProjectEulerSolvers
 {
     class Fraction
     {
+        private static Fraction _one = Integer(1);
+        public static Fraction ONE { get { return _one; } }
+
         private BigInt _num;
         private BigInt _deno;
         public BigInt Numerator { get { return _num; } set { _deno = value; } }
@@ -20,6 +24,12 @@ namespace ProjectEulerSolvers
                 if (0 == value) throw new System.ArgumentException("denominator should not be 0");
                 _deno = value;
             }
+        }
+        public double Value { get { return double.Parse(_num.ToString()) / double.Parse(_deno.ToString()); } }
+
+        public static Fraction Integer(BigInt i)
+        {
+            return new Fraction(i, 1);
         }
 
         public Fraction(BigInt num, BigInt deno)
