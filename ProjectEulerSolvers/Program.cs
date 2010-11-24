@@ -26,9 +26,9 @@ namespace ProjectEulerSolvers
         static void OutputLine(string s)
         {
 #if DEBUG
-            watch.Stop(); 
-            Console.WriteLine(s); 
-            watch.Start(); 
+            watch.Stop();
+            Console.WriteLine(s);
+            watch.Start();
 #endif
         }
         static void Output(string format, params object[] arg) { Output(string.Format(format, arg)); }
@@ -66,8 +66,8 @@ namespace ProjectEulerSolvers
             try 
             {
                 string input = Console.ReadLine();
-                if (!string.IsNullOrEmpty(input)) userMethod = thisType.GetMethod(string.Format("Prob{0:D3}", int.Parse(input)), flag);
-                if (!string.IsNullOrEmpty(input) && null == userMethod) { Console.WriteLine("Method not found"); return null; } 
+                if (!string.IsNullOrEmpty(input.Trim())) userMethod = thisType.GetMethod(string.Format("Prob{0:D3}", int.Parse(input)), flag);
+                if (!string.IsNullOrEmpty(input.Trim()) && null == userMethod) { Console.WriteLine("Method not found"); return null; } 
             }
             catch (Exception ex) 
             {
@@ -2439,11 +2439,15 @@ namespace ProjectEulerSolvers
 
         static long Prob064()
         {
+            HashSet<int> squares = new HashSet<int>(Enumerable.Range(1, 100).Select(x => x * x));
+            return Enumerable.Range(1, 10000)
+                .Where(n => !squares.Contains(n) && 0 != (new Sqrt(n)).RatioCycle.Count % 2)
+                .Count();
+        }
+
+        static long Prob065()
+        {
             long rst = 0;
-            IrrationalNumber n = new IrrationalNumber(2, new SqrtExpandSequence((new int[] { 4 }).ToList<int>()));
-            int level = 50;
-            Fraction f = n.ToFraction(level);
-            OutputLine("expand 3 to level {2}: {0} := {1}", f, f.Value, level);
             return rst;
         }
         

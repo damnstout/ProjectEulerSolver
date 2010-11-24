@@ -23,6 +23,12 @@ namespace ProjectEulerSolvers
             return GCD(b, a % b);
         }
 
+        public static int GCD(int a, int b)
+        {
+            if (a % b == 0) return b;
+            return GCD(b, a % b);
+        }
+
         /// <summary>
         /// 最小公倍数
         /// </summary>

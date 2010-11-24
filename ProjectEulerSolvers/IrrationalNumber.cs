@@ -45,6 +45,11 @@ namespace ProjectEulerSolvers
         public override int Ratio(int n) { return _ratioCycle[(n - 1) % _ratioCycle.Count]; }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("({0})", string.Join(",", (from ratio in _ratioCycle select ratio.ToString()).ToArray()));
+        }
     }
 
     class IrrationalNumber
@@ -67,6 +72,11 @@ namespace ProjectEulerSolvers
                 irrationPart = Fraction.ONE / (Fraction.Integer(ratios[i]) + irrationPart);
             }
             return _base + irrationPart;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[{0};{1}]", _base, _expSeq);
         }
     }
 }
