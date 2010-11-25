@@ -78,13 +78,13 @@ namespace ProjectEulerSolvers
         private int _n;
         private int _floor;
         private List<int> _ratioCycle;
-        private IrrationalNumber _irraNum;
+        private ContinuedFraction _continuedFraction;
 
         private ExpandFraction _baseFraction;
 
         public int Floor { get { return _floor; } }
         public List<int> RatioCycle { get { return _ratioCycle; } }
-        public IrrationalNumber IrrationNumber { get { return _irraNum; } }
+        public ContinuedFraction ContinuedFraction { get { return _continuedFraction; } }
 
         public Sqrt(int n)
         {
@@ -100,12 +100,12 @@ namespace ProjectEulerSolvers
                 _ratioCycle.Add(ef.Base);
                 if (_baseFraction == ef) break;
             }
-            _irraNum = new IrrationalNumber(_floor, new SqrtExpandSequence(_ratioCycle));
+            _continuedFraction = new ContinuedFraction(_floor, new SqrtExpandSequence(_ratioCycle));
         }
 
         public override string ToString()
         {
-            return _irraNum.ToString();
+            return _continuedFraction.ToString();
         }
     }
 }

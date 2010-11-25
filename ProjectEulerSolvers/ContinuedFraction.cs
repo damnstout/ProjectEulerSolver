@@ -14,7 +14,7 @@ namespace ProjectEulerSolvers
         List<int> RatioList(int length);
     }
 
-    public abstract class DefaultExpandSequence : ExpandSequence
+    abstract class DefaultExpandSequence : ExpandSequence
     {
 
         #region ExpandSequence 成员
@@ -34,7 +34,7 @@ namespace ProjectEulerSolvers
         #endregion
     }
 
-    public class SqrtExpandSequence : DefaultExpandSequence
+    class SqrtExpandSequence : DefaultExpandSequence
     {
         private List<int> _ratioCycle;
 
@@ -52,12 +52,20 @@ namespace ProjectEulerSolvers
         }
     }
 
-    class IrrationalNumber
+    class EExpandSequence: DefaultExpandSequence
+    {
+        public override int Ratio(int n)
+        {
+            return n % 3 == 2 ? (n + 1) / 3 * 2 : 1;
+        }
+    }
+
+    class ContinuedFraction
     {
         private Fraction _base;
         private ExpandSequence _expSeq;
 
-        public IrrationalNumber(BigInt baseNum, ExpandSequence expSeq)
+        public ContinuedFraction(BigInt baseNum, ExpandSequence expSeq)
         {
             _base = Fraction.Integer(baseNum);
             _expSeq = expSeq;

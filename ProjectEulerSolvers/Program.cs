@@ -44,13 +44,23 @@ namespace ProjectEulerSolvers
 
         static void Main(string[] args)
         {
-            Executor e = GetRunner();
-            if (null == e) return;
-            watch.Start();
-            long rst = e();
-            watch.Stop();
-            Console.WriteLine("Answer of {1} is: {0:D}", rst, e.Method.Name);
-            Console.WriteLine("Time cost is: {0}ms", watch.ElapsedMilliseconds);
+            foreach (Executor e in GetRunners())
+            {
+                watch.Reset();
+                watch.Start();
+                object rst = e();
+                watch.Stop();
+                Console.Write("Answer of {1} is: {0:D}", rst, e.Method.Name);
+                Console.WriteLine(" ==> {0}ms", watch.ElapsedMilliseconds);
+            }
+            //Executor e = GetRunner();
+            //if (null == e) return;
+            //watch.Reset();
+            //watch.Start();
+            //object rst = e();
+            //watch.Stop();
+            //Console.WriteLine("Answer of {1} is: {0:D}", rst, e.Method.Name);
+            //Console.WriteLine("Time cost is: {0}ms", watch.ElapsedMilliseconds);
         }
 
         static Executor GetRunner()
@@ -75,6 +85,18 @@ namespace ProjectEulerSolvers
                 return null;
             };
             return (Executor) Delegate.CreateDelegate(typeof(Executor), null == userMethod ? defaultMethod : userMethod);
+        }
+
+        static List<Executor> GetRunners()
+        {
+            BindingFlags flag = BindingFlags.Static | BindingFlags.NonPublic;
+            Type thisType = typeof(Program);
+            List<Executor> rst = new List<Executor>();
+            typeof(Program).GetMethods(flag)
+                .Where(x => x.Name.StartsWith("Prob") && x.Name.Length == 7)
+                .OrderBy(x => x.Name).ToList()
+                .ForEach(x => rst.Add( (Executor) Delegate.CreateDelegate(typeof(Executor), x) ));
+            return rst;
         }
 
         static long Prob001()
@@ -338,14 +360,19 @@ namespace ProjectEulerSolvers
 
         static long[,] Prob015Register = new long[50, 50];
 
-        static long Prob015(int x, int y)
+        static long Prob015()
+        {
+            return Prob015Impl(20, 20);
+        }
+
+        static long Prob015Impl(int x, int y)
         {
             if (0 != Prob015Register[x, y])
             {
                 return Prob015Register[x, y];
             }
             Console.WriteLine("{0},{1}", x, y);
-            long rst = x * y == 0 ? 1 : Prob015(x - 1, y) + Prob015(x, y - 1);
+            long rst = x * y == 0 ? 1 : Prob015Impl(x - 1, y) + Prob015Impl(x, y - 1);
             Prob015Register[x, y] = rst;
             return  rst;
         }
@@ -2127,7 +2154,7 @@ namespace ProjectEulerSolvers
 
         static long Prob057()
         {
-            IrrationalNumber sqrtTwo = new IrrationalNumber(1, new SqrtExpandSequence((new int[] {2}).ToList()));
+            ContinuedFraction sqrtTwo = new ContinuedFraction(1, new SqrtExpandSequence((new int[] {2}).ToList()));
             long rst = 0;
             Fraction suffix = new Fraction(1, 2), ONE = Fraction.ONE, TWO = Fraction.Integer(2);
             int counter = 0;
@@ -2441,13 +2468,85 @@ namespace ProjectEulerSolvers
         {
             HashSet<int> squares = new HashSet<int>(Enumerable.Range(1, 100).Select(x => x * x));
             return Enumerable.Range(1, 10000)
-                .Where(n => !squares.Contains(n) && 0 != (new Sqrt(n)).RatioCycle.Count % 2)
+                .Where(n => !(new BigInt(n).IsPerfectSquare()) && 0 != (new Sqrt(n)).RatioCycle.Count % 2)
                 .Count();
         }
 
         static long Prob065()
         {
+            return new ContinuedFraction(2, new EExpandSequence())
+                .ToFraction(99).Numerator.ToString().ToCharArray()
+                .Select(x => (int)(x - '0')).Sum();
+        }
+
+        static long Prob066()
+        {
+            BigInt max = 0;
             long rst = 0;
+            Enumerable.Range(1, 1000).Where(n => !(new BigInt(n).IsPerfectSquare()))
+                .ToList<int>().ForEach(n => rst = Prob066MinimalPellSolution(n, ref max) ? n : rst);
+            return rst;
+        }
+
+        static bool Prob066MinimalPellSolution(int n, ref BigInt rst)
+        {
+            Output("working on {0}: ", n);
+            ContinuedFraction cf = new Sqrt(n).ContinuedFraction;
+            int counter = 0;
+            Fraction expend = cf.ToFraction(counter);
+            BigInt x = expend.Numerator, y = expend.Denominator;
+            while ((x * x)  - (n * y * y) != 1)
+            {
+                counter++;
+                expend = cf.ToFraction(counter);
+                x = expend.Numerator; y = expend.Denominator;
+            }
+            OutputLine("{0}^2 - {1}*{2}^2 = 1", x, n, y);
+            if (rst < x)
+            {
+                rst = x;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        static long Prob067()
+        {
+            int size = 100;
+            int mask = 100;
+            int[,] data = new int[size, size];
+            Prob018Init("Prob067_large_triangle.txt", data, size, mask);
+            int[,] drst = new int[size, size];
+            bool[,] solved = new bool[size, size];
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    drst[i, j] = int.MaxValue;
+                    solved[i, j] = false;
+                }
+            }
+            drst[0, 0] = data[0, 0];
+            solved[0, 0] = true;
+            Prob018Dijkstra(data, drst, size, solved);
+            Prob018DijkstraPrint(drst, size, mask);
+            long min = int.MaxValue;
+            for (int j = 0; j < size; j++)
+            {
+                if (drst[size - 1, j] < min)
+                {
+                    min = drst[size - 1, j];
+                }
+            }
+            return (mask * size) - min;
+        }
+
+        static long Prob068()
+        {
+            long rst = 6531031914842725;
             return rst;
         }
         
