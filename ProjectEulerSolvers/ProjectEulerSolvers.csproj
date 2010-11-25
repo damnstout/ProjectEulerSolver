@@ -57,10 +57,14 @@
     <Compile Include="ContinuedFraction.cs" />
     <Compile Include="Permutater.cs" />
     <Compile Include="Prob054PorkerSuite.cs" />
+    <Compile Include="Problems001_020.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sqrt.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="Problems021_040.cs" />
+    <Compile Include="Problems041_060.cs" />
+    <Compile Include="Problems061_080.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libgmp-3.dll">
@@ -68,6 +72,27 @@
     </Content>
     <Content Include="Oyster.IntX.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\prob018_medium_triangle.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\prob022_names.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\prob042_words.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\prob054_poker.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\prob054_porker_sample.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\prob059_cipher1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\prob067_large_triangle.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
