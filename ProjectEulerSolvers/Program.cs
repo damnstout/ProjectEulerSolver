@@ -22,27 +22,30 @@ namespace ProjectEulerSolvers
 
         static Stopwatch watch = new Stopwatch();
 
-        #region Output Substitution
+        #region Output Substitution for Debug
+        [Conditional("DEBUG")]
         static void OutputLine(string format, params object[] arg) { OutputLine(string.Format(format, arg)); }
+        [Conditional("DEBUG")]
         static void OutputLine(object o) { OutputLine(o.ToString()); }
+        [Conditional("DEBUG")]
         static void OutputLine() { OutputLine(""); }
+        [Conditional("DEBUG")]
         static void OutputLine(string s)
         {
-#if DEBUG
             watch.Stop();
             Console.WriteLine(s);
             watch.Start();
-#endif
         }
+        [Conditional("DEBUG")]
         static void Output(string format, params object[] arg) { Output(string.Format(format, arg)); }
+        [Conditional("DEBUG")]
         static void Output(object o) { Output(o.ToString()); }
+        [Conditional("DEBUG")]
         static void Output(string s) 
         {
-#if DEBUG
             watch.Stop(); 
             Console.Write(s); 
             watch.Start();
-#endif
         }
         #endregion
 
@@ -73,7 +76,7 @@ namespace ProjectEulerSolvers
             try 
             {
                 string input = Console.ReadLine();
-                if ("ALL".Equals(input.Trim().ToUpper())) methods.ForEach(x => rst.Add(CreateExecutor(x)));
+                if ("ALL".Equals(input.Trim().ToUpper())) methods.ForEach(x => rst.Insert(0, CreateExecutor(x)));
                 else if (!string.IsNullOrEmpty(input.Trim())) userMethod = methods.Where(x => x.Name.Equals(string.Format("Prob{0:D3}", int.Parse(input)))).First();
                 else if (!string.IsNullOrEmpty(input.Trim()) && null == userMethod) { Console.WriteLine("Method not found"); return null; }
             }

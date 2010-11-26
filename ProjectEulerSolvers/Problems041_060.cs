@@ -325,11 +325,13 @@ namespace ProjectEulerSolvers
 
         static long Prob048()
         {
+            Console.WriteLine("not implemented");
             return 0;
         }
 
         static long Prob049()
         {
+            Console.WriteLine("not implemented");
             return 0;
         }
 
