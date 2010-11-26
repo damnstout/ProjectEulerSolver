@@ -22,6 +22,7 @@ namespace ProjectEulerSolvers
 
         static Stopwatch watch = new Stopwatch();
 
+        #region Output Substitution
         static void OutputLine(string format, params object[] arg) { OutputLine(string.Format(format, arg)); }
         static void OutputLine(object o) { OutputLine(o.ToString()); }
         static void OutputLine() { OutputLine(""); }
@@ -43,11 +44,13 @@ namespace ProjectEulerSolvers
             watch.Start();
 #endif
         }
+        #endregion
 
         static void Main(string[] args)
         {
             List<Executor> runners = GetRunners();
             if (null == runners) return;
+            TimeSpan totalTime = new TimeSpan(0);
             foreach (Executor e in runners)
             {
                 Console.Write("Working on {0}", e.Method.Name);
@@ -55,22 +58,22 @@ namespace ProjectEulerSolvers
                 watch.Start();
                 object rst = e();
                 watch.Stop();
-                string s = string.Format("\t ==> {0:D}", rst);
-                Console.Write(s.PadRight(20));
-                Console.WriteLine("\t{0}ms", watch.ElapsedMilliseconds);
+                totalTime += watch.Elapsed;
+                Console.WriteLine(" ==> {0}\t{1}ms", rst.ToString().PadRight(20), watch.ElapsedMilliseconds);
             }
+            Console.WriteLine("Total time: {0}", totalTime.ToString());
         }
 
         static List<Executor> GetRunners()
         {
             List<Executor> rst = new List<Executor>();
-            IEnumerable<MethodInfo> methods = GetAllSolvers();
-            Console.Write("Which problem to run({0}) ? ", methods.Last().Name.Substring(4));
+            List<MethodInfo> methods = GetAllSolvers();
+            Console.Write("Which problem to run({0}) ? ", methods[0].Name.Substring(4));
             MethodInfo userMethod = null;
             try 
             {
                 string input = Console.ReadLine();
-                if ("ALL".Equals(input.Trim().ToUpper())) methods.ToList().ForEach(x => rst.Add(CreateExecutor(x)));
+                if ("ALL".Equals(input.Trim().ToUpper())) methods.ForEach(x => rst.Add(CreateExecutor(x)));
                 else if (!string.IsNullOrEmpty(input.Trim())) userMethod = methods.Where(x => x.Name.Equals(string.Format("Prob{0:D3}", int.Parse(input)))).First();
                 else if (!string.IsNullOrEmpty(input.Trim()) && null == userMethod) { Console.WriteLine("Method not found"); return null; }
             }
@@ -79,15 +82,15 @@ namespace ProjectEulerSolvers
                 Console.WriteLine(ex.Message);
                 return null;
             };
-            if (0 == rst.Count) rst.Add(CreateExecutor(null == userMethod ? methods.Last() : userMethod));
+            if (0 == rst.Count) rst.Add(CreateExecutor(null == userMethod ? methods[0] : userMethod));
             return rst;
         }
 
-        static IEnumerable<MethodInfo> GetAllSolvers()
+        static List<MethodInfo> GetAllSolvers()
         {
             return typeof(Program).GetMethods(MethodFlag)
                 .Where(x => x.Name.StartsWith("Prob") && x.Name.Length == 7)
-                .OrderBy(x => x.Name);
+                .OrderByDescending(x => x.Name).ToList();
         }
 
         static Executor CreateExecutor(MethodInfo m)
