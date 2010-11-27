@@ -755,8 +755,41 @@ namespace ProjectEulerSolvers
 
         static long Prob038()
         {
-            Console.WriteLine("not implemented");
-            return 0;
+            long rst = 0;
+            for (int i = 5000; i <= 9999; i++)
+            {
+                string digit = Prob038ConcatPan(new string[] { i.ToString(), (i * 2).ToString() });
+                if (!Prob038IsPandigital(digit)) continue;
+                OutputLine("found 1 concatenation: {0},(1..2)", i);
+                rst = Math.Max(rst, long.Parse(digit));
+            }
+            for (int i = 100; i <= 333; i++)
+            {
+                string digit = Prob038ConcatPan(new string[] { i.ToString(), (i * 2).ToString(), (i * 3).ToString() });
+                if (!Prob038IsPandigital(digit)) continue;
+                OutputLine("found 1 concatenation: {0},(1..2)", i);
+                rst = Math.Max(rst, long.Parse(digit));
+            }
+            return rst;
+        }
+
+        static string Prob038ConcatPan(string[] digits) 
+        {
+            return string.Join(string.Empty, digits);
+        }
+
+        static HashSet<char> prob038Cache = new HashSet<char>();
+
+        static bool Prob038IsPandigital(string digit)
+        {
+            if (9 != digit.Length) return false;
+            prob038Cache.Clear();
+            foreach (char c in digit)
+            {
+                if ('0' == c || prob038Cache.Contains(c)) return false;
+                prob038Cache.Add(c);
+            }
+            return true;
         }
 
         static long Prob039()
