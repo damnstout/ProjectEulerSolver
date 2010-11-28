@@ -325,14 +325,39 @@ namespace ProjectEulerSolvers
 
         static long Prob048()
         {
-            Console.WriteLine("not implemented");
-            return 0;
+            long rst = 0;
+            long ceil = 10000000000;
+            for (int n = 1; n <= 1000; n++)
+            {
+                long curr = 1;
+                for (int m = 1; m <= n; m++)
+                {
+                    curr *= n;
+                    curr %= ceil;
+                }
+                rst += curr;
+            }
+            return rst % ceil;
         }
 
         static long Prob049()
         {
-            Console.WriteLine("not implemented");
-            return 0;
+            List<long> found = new List<long>();
+            for (long n = 1488; n < 9999; n++ )
+            {
+                found.Clear();
+                found.Add(n);
+                foreach (List<char> ca in new Permutater<List<char>, char>(n.ToString().ToCharArray().ToList()))
+                {
+                    long nn = long.Parse(new string(ca.ToArray()));
+                    if (!found.Contains(nn) && nn > found[0] && PrimeHelper.IsPrime(nn)) found.Add(nn);
+                }
+                if (3 != found.Count) continue;
+                found.Sort();
+                if (found[2] - found[1] != found[1] - found[0]) continue;
+                break;
+            }
+            return long.Parse(string.Join(string.Empty, found.Select(x => x.ToString()).ToArray()));
         }
 
         static long Prob050_Old()

@@ -228,6 +228,7 @@ namespace ProjectEulerSolvers
 
         static long Prob068()
         {
+            Console.WriteLine("not implemented");
             long rst = 6531031914842725;
             return rst;
         }

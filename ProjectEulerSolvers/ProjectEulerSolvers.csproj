@@ -56,6 +56,7 @@
     <Compile Include="Fraction.cs" />
     <Compile Include="ContinuedFraction.cs" />
     <Compile Include="Permutater.cs" />
+    <Compile Include="PrimeHelper.cs" />
     <Compile Include="Prob054PorkerSuite.cs" />
     <Compile Include="Problems001_020.cs" />
     <Compile Include="Program.cs" />
