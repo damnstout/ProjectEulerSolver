@@ -68,6 +68,7 @@
     <Compile Include="Problems061_080.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\Prob068.jpg" />
     <Content Include="libgmp-3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

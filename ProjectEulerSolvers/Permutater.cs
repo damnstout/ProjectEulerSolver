@@ -13,6 +13,8 @@ namespace ProjectEulerSolvers
 
         private int[] _indexes;
 
+        private bool _freshNew = true;
+
         public Permutater(T input)
         {
             _input = input;
@@ -46,7 +48,7 @@ namespace ProjectEulerSolvers
 
         public bool MoveNext()
         {
-            return NextPermutation(_indexes);
+            return NextPermutation();
         }
 
         public void Reset()
@@ -87,15 +89,21 @@ namespace ProjectEulerSolvers
             b = temp;
         }
 
-        public static bool NextPermutation(int[] p)
+        public bool NextPermutation()
         {
-            int n = p.Length;
+            if (_freshNew)
+            {
+                _freshNew = false;
+                return true;
+            }
+
+            int n = _indexes.Length;
             int last = n - 1;
             int i, j, k;
 
             //从后向前查找，看有没有后面的数大于前面的数的情况，若有则停在后一个数的位置。
             i = last;
-            while (i > 0 && p[i] < p[i - 1])
+            while (i > 0 && _indexes[i] < _indexes[i - 1])
                 i--;
             //若没有后面的数大于前面的数的情况，说明已经到了最后一个排列，返回false。
             if (i == 0)
@@ -104,13 +112,13 @@ namespace ProjectEulerSolvers
             //从后查到i，查找大于p[i - 1]的最小的数，记入k
             k = i;
             for (j = last; j >= i; j--)
-                if (p[j] > p[i - 1] && p[j] < p[k])
+                if (_indexes[j] > _indexes[i - 1] && _indexes[j] < _indexes[k])
                     k = j;
             //交换p[k]和p[i - 1]
-            Swap(ref p[k], ref p[i - 1]);
+            Swap(ref _indexes[k], ref _indexes[i - 1]);
             //倒置p[last]到p[i]
             for (j = last, k = i; j > k; j--, k++)
-                Swap(ref p[j], ref p[k]);
+                Swap(ref _indexes[j], ref _indexes[k]);
 
             return true;
         }

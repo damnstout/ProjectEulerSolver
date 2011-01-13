@@ -226,11 +226,140 @@ namespace ProjectEulerSolvers
             return (mask * size) - min;
         }
 
+        //static int _prob068ResultSize = 9;
+        //static int _prob068Size = 3;
+        //static int[,] _prob068Indexes = new int[,] {
+        //    { 4, 3, 2 },
+        //    { 5, 1, 3 },
+        //    { 6, 2, 1 } };
+        static int _prob068ResultSize = 16;
+        static int _prob068Size = 5;
+        static int[,] _prob068Indexes = new int[,] {
+            { 6, 5, 4 },
+            { 7, 1, 5 },
+            { 8, 2, 1 },
+            { 9, 3, 2 },
+            { 10, 4, 3 } };
+
         static long Prob068()
         {
-            Console.WriteLine("not implemented");
-            long rst = 6531031914842725;
+            long rst = 0;
+            foreach (List<int> ring in new Permutater<List<int>, int>(Enumerable.Range(1, _prob068Size * 2).ToList()))
+            {
+                if (!Prob068IsMagicRing(ring)) continue;
+                long num = Prob068MakeRingNumber(ring);
+                if (_prob068ResultSize != num.ToString().Length) continue;
+                OutputLine(num);
+                rst = Math.Max(rst, num);
+            }
             return rst;
+        }
+
+        static bool Prob068IsMagicRing(List<int> ring)
+        {
+            int tmp = Prob068SumBranch(ring, 1);
+            for (int i = 2; i <= _prob068Size; i++ )
+            {
+                if (tmp != Prob068SumBranch(ring, i)) return false;
+            }
+            return true;
+        }
+
+        static int Prob068SumBranch(List<int> ring, int index)
+        {
+            return ring[_prob068Indexes[index - 1, 0] - 1]
+                + ring[_prob068Indexes[index - 1, 1] - 1]
+                + ring[_prob068Indexes[index - 1, 2] - 1];
+        }
+
+        static long Prob068MakeRingNumber(List<int> ring)
+        {
+            string rst = "";
+            int start = Prob068FindRingNumberStartPosition(ring);
+            for (int i = start; i >= 0; i-- )
+            {
+                rst += Prob068ConcatenateBranch(ring, i);
+            }
+            for (int j = _prob068Size - 1; j > start; j--)
+            {
+                rst += Prob068ConcatenateBranch(ring, j);
+            }
+            return long.Parse(rst);
+        }
+
+        static string Prob068ConcatenateBranch(List<int> ring, int branch)
+        {
+            return string.Format("{0}{1}{2}", 
+                ring[_prob068Indexes[branch, 0] - 1],
+                ring[_prob068Indexes[branch, 1] - 1],
+                ring[_prob068Indexes[branch, 2] - 1]);
+        }
+
+        static int Prob068FindRingNumberStartPosition(List<int> ring)
+        {
+            int rst = _prob068Size;
+            foreach (int p in Enumerable.Range(_prob068Size, _prob068Size).ToList())
+            {
+                if (ring[p] >= ring[rst]) continue;
+                rst = p;
+            }
+            return rst - _prob068Size;
+        }
+
+        static long Prob069()
+        {
+            long rst = 2;
+            double maxRatio = 2;
+            Dictionary<long, int> factorizationContainer = new Dictionary<long, int>();
+            for (long n = 2; n <= 1000000; n++ )
+            {
+                double ratio = Prob069CalculatePhiRate(n, factorizationContainer);
+                if (ratio <= maxRatio) continue;
+                maxRatio = ratio;
+                rst = n;
+                OutputLine("Current max ratio is {0} from {1}", ratio, n);
+            }
+            return rst;
+        }
+
+        static double Prob069CalculatePhiRate(long num, Dictionary<long, int> factors)
+        {
+            Prob069Factorizing(num, factors);
+            if (0 == factors.Count) return num / (num - 1);
+            int n = 1;
+            factors.ToList().ForEach(p => n *= (int)(Math.Pow(p.Key, p.Value) - Math.Pow(p.Key, p.Value - 1)));
+            return (double) num / (double) n;
+        }
+
+        static void Prob069Factorizing(long num, Dictionary<long ,int> result)
+        {
+            result.Clear();
+            if (PrimeHelper.IsPrime(num)) return;
+            if (num % 10000 == 0) Console.WriteLine("working on {0}...", num);
+            long number = num;
+            long divisor = 2;
+            while (number > 1)
+            {
+                if (0 == (number % divisor))
+                {
+                    number /= divisor;
+                    Prob069FactorizingAddFactor(divisor, result);
+                    divisor--;
+                }
+                divisor++;
+            }
+        }
+
+        static void Prob069FactorizingAddFactor(long factor, Dictionary<long, int> result)
+        {
+            if (result.ContainsKey(factor))
+            {
+                result[factor] = result[factor] + 1;
+            } 
+            else
+            {
+                result.Add(factor, 1);
+            }
         }
     }
 }
