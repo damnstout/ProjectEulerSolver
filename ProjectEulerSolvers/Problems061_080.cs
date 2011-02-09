@@ -306,7 +306,27 @@ namespace ProjectEulerSolvers
             return rst - _prob068Size;
         }
 
+        /// <summary>
+        /// Let N = P1^A1*P2^A2*...*Pn^An. P1 < P2 < ... < Pn
+        /// Then Phi(N) = (P1^A1 - P1^(A1 - 1))*(P2^A2 - P2^(A2 - 1))*...*(Pn^An - Pn^(An - 1))
+        /// So N/Phi(N) = P1/(P1 - 1)*P2/(P2 - 1)*...*Pn/(Pn - 1)
+        /// Say we can receive largest result when A1 = A2 = A3 = ... = An
+        /// So the number should be product of first K primes
+        /// </summary>
+        /// <returns></returns>
         static long Prob069()
+        {
+            long rst = 1;
+            for (long p = 2; ; p++ )
+            {
+                if (!PrimeHelper.IsPrime(p)) continue;
+                if (rst * p > 1000000) break;
+                rst *= p;
+            }
+            return rst;
+        }
+
+        static long Prob069BruteForce()
         {
             long rst = 2;
             double maxRatio = 2;
@@ -335,7 +355,7 @@ namespace ProjectEulerSolvers
         {
             result.Clear();
             if (PrimeHelper.IsPrime(num)) return;
-            if (num % 10000 == 0) Console.WriteLine("working on {0}...", num);
+            if (num % 10000 == 0) OutputLine("working on {0}...", num);
             long number = num;
             long divisor = 2;
             while (number > 1)
@@ -360,6 +380,48 @@ namespace ProjectEulerSolvers
             {
                 result.Add(factor, 1);
             }
+        }
+
+
+        /// <summary>
+        /// We can reduce our search significantly by selecting prime pairs (p1, p2 ) and calculate n as n = p1 x p2. 
+        /// This allows the totient to be calculated as φ(n) = (p1-1)(p2-1) for n. 
+        /// Now, just find the minimum ratio n/φ(n) for those n and φ(n) that are permutations of one another.
+        /// The range of primes was selected by taking the square root of the upper bound, 10,000,000, 
+        /// which is about 3162 and taking ±30% for a range of primes from 2000 to 4000 (247 primes).
+        /// 
+        /// The minimal solution for n/phi(n) would be if n was prime giving n/(n-1) but since n-1 never is a permutation of n it cannot be prime. 
+        /// The next best thing would be if n only consisted of 2 prime factors close to (in this case) sqrt(10000000).
+        /// </summary>
+        /// <returns></returns>
+        static long Prob070()
+        {
+            List<long> candis = Prob070FindPrimeFactors();
+            long upperBound = 10000000;
+            long rst = 1;
+            double minRatio = double.MaxValue;
+            foreach (long l1 in candis)
+            {
+                foreach (long l2 in candis)
+                {
+                    long n = l1 * l2;
+                    if (n >= upperBound) break;
+                    long phiN = (l1 - 1) * (l2 - 1);
+                    double ratio = ((double) n) / ((double) phiN);
+                    if (ratio > minRatio) continue;
+                    if (!Tools.IsPermutation(n, phiN)) continue;
+                    minRatio = ratio;
+                    rst = n;
+                }
+            }
+            return rst;
+        }
+
+        static List<long> Prob070FindPrimeFactors()
+        {
+            List<long> rst = new List<long>();
+            for (long i = 2003; i < 4000; i++) { if (PrimeHelper.IsPrime(i)) rst.Add(i); }
+            return rst;
         }
     }
 }

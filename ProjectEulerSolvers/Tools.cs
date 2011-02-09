@@ -12,6 +12,27 @@ namespace ProjectEulerSolvers
         static List<int> intList = new List<int>();
 
         /// <summary>
+        /// 判断两数是否互为全排列
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="n1"></param>
+        /// <param name="n2"></param>
+        /// <returns></returns>
+        public static bool IsPermutation<T>(T n1, T n2)
+        {
+            List<char> lst1 = n1.ToString().ToCharArray().ToList();
+            lst1.Sort();
+            List<char> lst2 = n2.ToString().ToCharArray().ToList();
+            lst2.Sort();
+            if (lst1.Count != lst2.Count) return false;
+            for (int i = 0; i < lst1.Count; i++)
+            {
+                if (lst1[i] != lst2[i]) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 最大公约数
         /// </summary>
         /// <param name="a"></param>
