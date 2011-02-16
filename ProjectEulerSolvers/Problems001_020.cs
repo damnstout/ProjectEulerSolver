@@ -9,6 +9,7 @@ using System.Threading;
 
 using Emil.GMP;
 using System.Reflection;
+using ProjectEulerSolvers.ThreadRunnerClasses;
 
 namespace ProjectEulerSolvers
 {
@@ -166,17 +167,13 @@ namespace ProjectEulerSolvers
 
         static long Prob010()
         {
-            long n = 2;
-            long sum = 0;
-            while (n < 2000000)
-            {
-                if (Tools.IsPrime(n))
-                {
-                    sum += n;
-                }
-                n++;
-            }
-            return sum;
+            PrimeHelper.PrimeFloor = 2000000;
+            return PrimeHelper.Primes.Sum();
+        }
+
+        static long Prob010MultiThread()
+        {
+            return TRProb010.Calculate(40000);
         }
 
         static long Prob011()
@@ -239,6 +236,11 @@ namespace ProjectEulerSolvers
         }
 
         static long Prob014()
+        {
+            return TRProb014.Calculate(20000);
+        }
+
+        static long Prob014SingleThread()
         {
             long rst = 0;
             int currCount = 0;

@@ -11,6 +11,81 @@ namespace ProjectEulerSolvers
     {
         static List<int> intList = new List<int>();
 
+        public static int EulerPhi(int n)
+        {
+            Dictionary<int, int> factorsContainer = new Dictionary<int, int>();
+            return EulerPhi(n, factorsContainer);
+        }
+
+        public static int EulerPhi(int n, Dictionary<int, int> factorsContainer)
+        {
+            if (1 == n) return 1;
+            if (IsPrime(n)) return n - 1;
+            int rst = 1;
+            FindPrimeFactors2(n, factorsContainer);
+            factorsContainer.ToList().ForEach(p => rst *= (int)(Math.Pow(p.Key, p.Value) - Math.Pow(p.Key, p.Value - 1)));
+            return rst;
+        }
+
+        public static void FindPrimeFactors(int n, Dictionary<int, int> result)
+        {
+            result.Clear();
+            if (PrimeHelper.IsPrime(n)) return;
+            int number = n;
+            int divisor = 2;
+            while (number > 1)
+            {
+                if (0 == (number % divisor))
+                {
+                    number /= divisor;
+                    AddPrimeFactor(divisor, result);
+                    divisor--;
+                }
+                divisor++;
+            }
+        }
+
+        public static Dictionary<int, int> FindPrimeFactors2(int n)
+        {
+            Dictionary<int, int> result = new Dictionary<int, int>();
+            FindPrimeFactors2(n, result);
+            return result;
+        }
+
+        public static void FindPrimeFactors2(int n, Dictionary<int, int> result)
+        {
+            result.Clear();
+            if (PrimeHelper.IsPrime(n)) return;
+            int number = n;
+            foreach (long p in PrimeHelper.Primes)
+            {
+                if (PrimeHelper.IsPrime(number))
+                {
+                    AddPrimeFactor(number, result);
+                    break;
+                }
+                if (1 == number) break;
+                if (p * p > number) break;
+                while (0 == (number % p))
+                {
+                    number /= (int) p;
+                    AddPrimeFactor((int)p, result);
+                }
+            }
+        }
+
+        private static void AddPrimeFactor(int factor, Dictionary<int, int> result)
+        {
+            if (result.ContainsKey(factor))
+            {
+                result[factor] = result[factor] + 1;
+            }
+            else
+            {
+                result.Add(factor, 1);
+            }
+        }
+
         /// <summary>
         /// 判断两数是否互为全排列
         /// </summary>

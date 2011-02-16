@@ -282,6 +282,7 @@ namespace ProjectEulerSolvers
 
         static long Prob047()
         {
+            PrimeHelper.PrimeFloor = 150000;
             List<long> candidates = new List<long>();
             long n = 2;
             while (true)
@@ -308,19 +309,7 @@ namespace ProjectEulerSolvers
 
         static bool Prob047CouldDecomposeTo4Primes(long number)
         {
-            HashSet<long> factors = new HashSet<long>();
-            int divisor = 2;
-            while (number > 1)
-            {
-                if (0 == (number % divisor))
-                {
-                    factors.Add(divisor);
-                    number /= divisor;
-                    divisor--;
-                }
-                divisor++;
-            }
-            return factors.Count == 4;
+            return Tools.FindPrimeFactors2((int) number).Count == 4;
         }
 
         static long Prob048()
@@ -738,14 +727,12 @@ namespace ProjectEulerSolvers
                 node2 = node1 + increment;
                 node3 = node2 + increment;
                 node4 = node3 + increment;
-                numerator += Tools.IsPrime(node1) ? 1 : 0;
-                numerator += Tools.IsPrime(node2) ? 1 : 0;
-                numerator += Tools.IsPrime(node3) ? 1 : 0;
-                numerator += Tools.IsPrime(node4) ? 1 : 0;
+                numerator += PrimeHelper.IsPrime(node1) ? 1 : 0;
+                numerator += PrimeHelper.IsPrime(node2) ? 1 : 0;
+                numerator += PrimeHelper.IsPrime(node3) ? 1 : 0;
+                numerator += PrimeHelper.IsPrime(node4) ? 1 : 0;
                 double ratio = numerator / denominator;
-                watch.Stop();
                 OutputLine(string.Format("size: {0}, ratio: {1:N6}", rst, ratio));
-                watch.Start();
                 if (0.1 > ratio) break;
             }
             return rst;

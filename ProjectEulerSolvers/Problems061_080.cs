@@ -9,6 +9,7 @@ using System.Threading;
 
 using Emil.GMP;
 using System.Reflection;
+using ProjectEulerSolvers.ThreadRunnerClasses;
 
 namespace ProjectEulerSolvers
 {
@@ -330,10 +331,9 @@ namespace ProjectEulerSolvers
         {
             long rst = 2;
             double maxRatio = 2;
-            Dictionary<long, int> factorizationContainer = new Dictionary<long, int>();
-            for (long n = 2; n <= 1000000; n++ )
+            for (long n = 2; n <= 1000000; n++)
             {
-                double ratio = Prob069CalculatePhiRate(n, factorizationContainer);
+                double ratio = n / (double)Tools.EulerPhi((int)n);
                 if (ratio <= maxRatio) continue;
                 maxRatio = ratio;
                 rst = n;
@@ -342,46 +342,10 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static double Prob069CalculatePhiRate(long num, Dictionary<long, int> factors)
+        static long Prob069ThreadingBruteForce()
         {
-            Prob069Factorizing(num, factors);
-            if (0 == factors.Count) return num / (num - 1);
-            int n = 1;
-            factors.ToList().ForEach(p => n *= (int)(Math.Pow(p.Key, p.Value) - Math.Pow(p.Key, p.Value - 1)));
-            return (double) num / (double) n;
+            return TRProb069.Calculate(20000);
         }
-
-        static void Prob069Factorizing(long num, Dictionary<long ,int> result)
-        {
-            result.Clear();
-            if (PrimeHelper.IsPrime(num)) return;
-            if (num % 10000 == 0) OutputLine("working on {0}...", num);
-            long number = num;
-            long divisor = 2;
-            while (number > 1)
-            {
-                if (0 == (number % divisor))
-                {
-                    number /= divisor;
-                    Prob069FactorizingAddFactor(divisor, result);
-                    divisor--;
-                }
-                divisor++;
-            }
-        }
-
-        static void Prob069FactorizingAddFactor(long factor, Dictionary<long, int> result)
-        {
-            if (result.ContainsKey(factor))
-            {
-                result[factor] = result[factor] + 1;
-            } 
-            else
-            {
-                result.Add(factor, 1);
-            }
-        }
-
 
         /// <summary>
         /// We can reduce our search significantly by selecting prime pairs (p1, p2 ) and calculate n as n = p1 x p2. 
@@ -421,6 +385,66 @@ namespace ProjectEulerSolvers
         {
             List<long> rst = new List<long>();
             for (long i = 2003; i < 4000; i++) { if (PrimeHelper.IsPrime(i)) rst.Add(i); }
+            return rst;
+        }
+
+        /// <summary>
+        /// With brute force
+        /// </summary>
+        /// <returns></returns>
+        static long Prob071()
+        {
+            long rst = 0, dd = 0;
+            double limit = 3 / 7d;
+            double minDiff = double.MaxValue;
+            for (double d = 1000000; d > 7; d -= 1 )
+            {
+                if ((((int)d) % 10000) == 0) OutputLine(string.Format("working on d={0}, current n is {1} and d is {2}", d, rst, dd));
+                int n = (int) Math.Floor(3 * d / 7);
+                if ((((int)d) % 7) == 0) n--;
+                while (1 != Tools.GCD(n, (int)d)) n--;
+                double f = n / d;
+                double diff = limit - f;
+                if (diff < 0) break;
+                if (diff > minDiff) continue;
+                minDiff = diff;
+                rst = n;
+                dd = (long)d;
+            }
+            return rst;
+        }
+
+        static long Prob072()
+        {
+            PrimeHelper.PrimeFloor = 1000000;
+            return TRProb072.Calculate(20000);
+        }
+
+        static long Prob072BruteForce()
+        {
+            PrimeHelper.PrimeLimit = 1000000;
+            long rst = 0;
+            (from x in Enumerable.Range(2, 1000000 - 1) select Tools.EulerPhi(x)).ToList().ForEach(x => rst += x);
+            return rst;
+        }
+
+        static long Prob073()
+        {
+            return TRProb073.Calculate(200);
+        }
+
+        static long Prob073SingleThread()
+        {
+            long rst = 0;
+            for (int n = 4; n <= 12000; n++ )
+            {
+                int ceil = (int) Math.Floor(n / 2.0);
+                int floor = (int) Math.Ceiling(n / 3.0);
+                for (int p = floor; p <= ceil; p++ )
+                {
+                    rst += 1 == Tools.GCD(n, p) ? 1 : 0;
+                }
+            }
             return rst;
         }
     }

@@ -579,10 +579,10 @@ namespace ProjectEulerSolvers
 
         static long Prob034()
         {
-            Dictionary<int, int> factorials = new Dictionary<int, int>();
+            Dictionary<char, int> factorials = new Dictionary<char, int>();
             for (int i = 0; i <= 9; i++)
             {
-                factorials.Add(i, (int)Prob024Factorial(i));
+                factorials.Add((char)('0' + i), (int)Prob024Factorial(i));
             }
             int ceil = Prob034FindCeiling();
             long rst = 0;
@@ -601,13 +601,13 @@ namespace ProjectEulerSolvers
             return rst;
         }
 
-        static int Prob034DigitSum(int n, Dictionary<int, int> factorials)
+        static int Prob034DigitSum(int n, Dictionary<char, int> factorials)
         {
             int rst = 0;
             char[] na = n.ToString().ToCharArray();
             foreach (char c in na)
             {
-                rst += factorials[(int)(c - '0')];
+                rst += factorials[c];
             }
             return rst;
         }
@@ -625,46 +625,17 @@ namespace ProjectEulerSolvers
 
         static long Prob035()
         {
-            HashSet<int> primes = new HashSet<int>();
-            HashSet<int> composities = new HashSet<int>();
-            long rst = 0;
-            for (int i = 2; i < 1000000; i++)
-            {
-                if (i % 10000 == 0)
-                {
-                    OutputLine("work from {0} to {1}...", i, i + 10000);
-                }
-                if (Prob035IsCirclePrime(i, primes, composities))
-                {
-                    OutputLine("found circle prime: {0}", i);
-                    rst++;
-                }
-            }
-            return rst;
+            PrimeHelper.PrimeLimit = 1000000;
+            return (from x in PrimeHelper.Primes where Prob035IsCirclePrime((int) x) select x).Count();
         }
 
-        static bool Prob035IsCirclePrime(int n, HashSet<int> primes, HashSet<int> composities)
+        static bool Prob035IsCirclePrime(int n)
         {
             string nstr = n.ToString();
             for (int i = 0; i < nstr.Length; i++)
             {
                 int nn = int.Parse(nstr);
-                if (composities.Contains(nn))
-                {
-                    return false;
-                }
-                if (!primes.Contains(nn))
-                {
-                    if (Tools.IsPrime(nn))
-                    {
-                        primes.Add(nn);
-                    }
-                    else
-                    {
-                        composities.Add(nn);
-                        return false;
-                    }
-                }
+                if (!PrimeHelper.IsPrime(nn)) return false;
                 nstr = nstr.Length > 1 ? string.Concat(nstr.Substring(1, nstr.Length - 1), nstr.Substring(0, 1)) : nstr;
             }
             return true;
@@ -705,50 +676,27 @@ namespace ProjectEulerSolvers
         {
             long rst = 0;
             int counter = 0;
-            int n = 11;
-            HashSet<long> primes = new HashSet<long>();
-            while (counter < 11)
+            PrimeHelper.PrimeLimit = 1000000;
+            foreach (long p in PrimeHelper.Primes)
             {
-                if (Prob037IsTruncatablePrime(n, primes))
-                {
-                    OutputLine("found 1 truncatable prime: {0}", n);
-                    counter++;
-                    rst += n;
-                }
-                n++;
+                if (p <= 10) continue;
+                if (!Prob037IsTruncatablePrime(p)) continue;
+                rst += p;
+                counter++;
+                if (11 == counter) break;
             }
             return rst;
         }
 
-        static bool Prob037IsTruncatablePrime(long n, HashSet<long> primes)
+        static bool Prob037IsTruncatablePrime(long n)
         {
             string nstr = n.ToString();
             for (int i = 0; i < nstr.Length; i++)
             {
                 long left = long.Parse(nstr.Substring(i, nstr.Length - i));
                 long right = long.Parse(nstr.Substring(0, nstr.Length - i));
-                if (!primes.Contains(left))
-                {
-                    if (Tools.IsPrime(left))
-                    {
-                        primes.Add(left);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (!primes.Contains(right))
-                {
-                    if (Tools.IsPrime(right))
-                    {
-                        primes.Add(right);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                if (!PrimeHelper.IsPrime(left)) return false;
+                if (!PrimeHelper.IsPrime(right)) return false;
             }
             return true;
         }
