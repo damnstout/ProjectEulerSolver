@@ -7,13 +7,13 @@ namespace ProjectEulerSolvers.ThreadRunnerClasses
 {
     class ThreadResultHolder<T> : IEnumerable<T>
     {
-        private HashSet<T> holder;
+        private List<T> holder;
 
         private Object mutex = new Object();
 
         public ThreadResultHolder()
         {
-            holder = new HashSet<T>();
+            holder = new List<T>();
         }
 
         public void AddResult(T value)

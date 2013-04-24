@@ -447,5 +447,47 @@ namespace ProjectEulerSolvers
             }
             return rst;
         }
+
+
+        static Dictionary<char, int> prob074FactorialRegister = new Dictionary<char, int>();
+        static Dictionary<int, int> prob074LenRegister = new Dictionary<int, int>();
+        static HashSet<int> prob074PathRegister = new HashSet<int>();
+
+        static long Prob074()
+        {
+            return TRProb074.Calculate(20000);
+        }
+
+        private static int max = 1500000;
+        private static byte[] count = new byte[max + 1];
+
+        static long Prob075()
+        {
+            Prob075Transform(3, 4, 5);
+            long total = 0;
+            for (int i = 0; i <= max; i++) if (count[i] == 1) total++;
+            return total;
+        }
+
+        private static void Prob075Transform(int x, int y, int z)
+        {
+            int len = x + y + z;
+            if (len > max) return;
+            for (int l = len; l <= max; l += len) count[l]++;
+            Prob075Transform(x - 2 * y + 2 * z, 2 * x - y + 2 * z, 2 * x - 2 * y + 3 * z);
+            Prob075Transform(x + 2 * y + 2 * z, 2 * x + y + 2 * z, 2 * x + 2 * y + 3 * z);
+            Prob075Transform(-x + 2 * y + 2 * z, -2 * x + y + 2 * z, -2 * x + 2 * y + 3 * z);
+        }
+
+        static long Prob076()
+        {
+            return Prob076Dcompose(40);
+        }
+
+        static long Prob076Dcompose(int n)
+        {
+            if (1 == n) return 0;
+            return (from x in Enumerable.Range(1, n / 2) select Prob076Dcompose(x) + Prob076Dcompose(n - x) + 1).Sum();
+        }
     }
 }

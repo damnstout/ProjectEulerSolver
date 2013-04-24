@@ -71,6 +71,7 @@
     <Compile Include="ThreadRunnerClasses\TRProbBase.cs" />
     <Compile Include="ThreadRunnerClasses\TRProb073.cs" />
     <Compile Include="ThreadRunnerClasses\TRProb014.cs" />
+    <Compile Include="ThreadRunnerClasses\TRProb074.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Problems021_040.cs" />
     <Compile Include="Problems041_060.cs" />
